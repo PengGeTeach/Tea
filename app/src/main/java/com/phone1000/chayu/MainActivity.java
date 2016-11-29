@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.RadioGroup;
 
 import com.phone1000.chayu.fragments.ChaPingFragment;
-import com.phone1000.chayu.fragments.HomeFragment;
 import com.phone1000.chayu.fragments.QuanZiFragment;
 import com.phone1000.chayu.fragments.ShiJiFragment;
 import com.phone1000.chayu.fragments.WenZhangFragment;

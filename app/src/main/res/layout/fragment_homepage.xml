@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_homepage_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--           Viewpager                -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/fragment_homepage_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"/>
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:layout_gravity="bottom"
+
+                android:background="@color/dark_gray"
+                android:orientation="horizontal" >
+                <TextView
+                    android:id="@+id/fragment_homepage_linear_type"
+                    android:background="@color/dull_red"
+                    android:textColor="#ffffff"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/fragment_homepage_linear_title"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="#ffffff"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:text="hello world !"/>
+                <!-- 用于显示圆点区域 -->
+
+                <LinearLayout
+                    android:id="@+id/fragment_homepage_linear"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    />
+
+            </LinearLayout>
+
+
+        </FrameLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_gray"/>
+
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/homepage_item_top_bottom_padding"
+            android:paddingBottom="@dimen/homepage_item_top_bottom_padding">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:text="@string/homepage_chaping"
+                android:layout_marginLeft="@dimen/homepage_item_left_margin"/>
+            <HorizontalScrollView
+
+
+                android:id="@+id/fragment_homepage_chaping_hscroll"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/homepage_icon_item_height"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/fragment_homepage_chaping_hscroll_linear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+
+                </LinearLayout>
+
+
+            </HorizontalScrollView>
+            
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_gray"/>
+
+
+        <!--                    市集                 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/homepage_item_top_bottom_padding"
+            android:paddingBottom="@dimen/homepage_item_top_bottom_padding">
+           <FrameLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="@string/homepage_shiji"
+                   android:layout_marginLeft="@dimen/homepage_item_left_margin"/>
+               <TextView
+                   android:id="@+id/fragment_homepage_shiji_more"
+                   android:text="@string/homepage_more"
+                   android:layout_marginRight="@dimen/homepage_item_right_margin"
+                   android:layout_gravity="right"
+                   android:gravity="center"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:drawableRight="@mipmap/more_icon"/>
+
+           </FrameLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_homepage_shiji_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/homepage_recycler_item_height">
+
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_gray"/>
+
+
+        <!--                圈子                -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/homepage_item_top_bottom_padding"
+            android:paddingBottom="@dimen/homepage_item_top_bottom_padding">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/homepage_quanzi"
+                    android:layout_marginLeft="@dimen/homepage_item_left_margin"/>
+                <TextView
+                    android:id="@+id/fragment_homepage_quanzi_more"
+                    android:text="@string/homepage_more"
+                    android:layout_marginRight="@dimen/homepage_item_right_margin"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@mipmap/more_icon"/>
+
+            </FrameLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_homepage_quanzi_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/homepage_recycler_item_height">
+
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/text_gray"/>
+
+
+
+
+        <!--                    文章                 -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/homepage_item_top_bottom_padding"
+            android:paddingBottom="@dimen/homepage_item_top_bottom_padding">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/homepage_wenzhang"
+                    android:layout_marginLeft="@dimen/homepage_item_left_margin"/>
+                <TextView
+                    android:id="@+id/fragment_homepage_wenzhang_more"
+                    android:text="@string/homepage_more"
+                    android:layout_marginRight="@dimen/homepage_item_right_margin"
+                    android:layout_gravity="right"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@mipmap/more_icon"/>
+
+            </FrameLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_homepage_wenzhang_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/homepage_recycler_item_height">
+
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+        
+        
+        
+
+    </LinearLayout>
+</ScrollView>

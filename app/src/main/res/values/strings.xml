@@ -5,6 +5,11 @@
     <string name="shi_ji">市集</string>
     <string name="quan_zi">圈子</string>
     <string name="wen_zhang">文章</string>
+    <string name="homepage_chaping">茶评</string>
+    <string name="homepage_shiji">市集</string>
+    <string name="homepage_more">更多</string>
+    <string name="homepage_quanzi">圈子</string>
+    <string name="homepage_wenzhang">文章</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
