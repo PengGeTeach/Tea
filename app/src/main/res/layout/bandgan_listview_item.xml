@@ -4,6 +4,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/pingfenbang"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="评分榜"
@@ -13,14 +14,28 @@
         android:gravity="center_vertical"
         />
 
-    <view
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#616060"
+        android:background="#696464"
         />
-    
-    <LinearLayout
+
+    <ListView
+        android:id="@+id/bangdan_listView"
         android:layout_width="match_parent"
-        android:layout_height=""></LinearLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:text="更多"
+        />
+
+
+
+
 
 </LinearLayout>

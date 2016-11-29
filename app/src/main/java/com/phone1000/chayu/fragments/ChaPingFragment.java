@@ -1,5 +1,7 @@
 package com.phone1000.chayu.fragments;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.MainActivity;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.TeachApp;
@@ -183,6 +186,8 @@ public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeL
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mViewPager.setOffscreenPageLimit(2);
         adapter = new TeaCommFragmentAdapter(getChildFragmentManager(),getData());
+
+
         mViewPager.setAdapter(adapter);
     }
 
@@ -193,9 +198,10 @@ public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeL
 
         PingPaiFragment pingPaiFragment = new PingPaiFragment();
         ChaLeiFragment chaPingFragment = new ChaLeiFragment();
+        BangDanFragment bangDanFragment = new BangDanFragment();
         data.add(pingPaiFragment);
         data.add(chaPingFragment);
-        data.add(new TesFragment());
+        data.add(bangDanFragment);
 
         return data;
 
@@ -215,9 +221,10 @@ public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeL
     @Override
     public void onPageSelected(int position) {
 
+        //mViewPager.reseHeigth(position);
     }
 
-    @Override
+        @Override
     public void onPageScrollStateChanged(int state) {
 
     }
@@ -225,7 +232,14 @@ public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeL
 
     @Override
     public void onClick(View view) {
-        String tag = (String) view.getTag();
-        Log.e(TAG, "onClick: "+tag );
+        if (view instanceof ImageView) {
+            String tag = (String) view.getTag();
+            Log.e(TAG, "onClick: "+tag );
+
+            Intent intent = new Intent(getActivity(), DetailsInFormation.class);
+
+            intent.putExtra("path",tag);
+            startActivity(intent);
+        }
     }
 }
