@@ -28,6 +28,7 @@ import com.phone1000.chayu.adapters.HomePageWenZhangAdapter;
 import com.phone1000.chayu.adapters.TeaCommImageAdapter;
 import com.phone1000.chayu.modles.HomePageModel;
 import com.phone1000.chayu.modles.TagEvent;
+import com.phone1000.chayu.modles.TeaListEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.Callback;
@@ -276,11 +277,12 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
         if (v instanceof LinearLayout) {
             LinearLayout linearLayout = (LinearLayout) v;
-            int tag = (int) linearLayout.getTag();
+            int tag = (int) linearLayout.getTag()+1;
             Log.e(TAG, "onClick: "+tag );
 
-            TagEvent tagEvent = new TagEvent(0x100);
-            tagEvent.setTag(tag);
+            TeaListEvent tagEvent = new TeaListEvent(0x100);
+            tagEvent.setSid(tag+"");
+            tagEvent.setBid(null);
             EventBus.getDefault().postSticky(tagEvent);
             Intent intent = new Intent(getContext(), TeaListActivity.class);
             startActivity(intent);

@@ -123,7 +123,7 @@ public class TeaListsSearchModel{
             private int bid;
             private String ico;
             private String name;
-            private List<?> children;
+            private List<CateChilde> children;
 
             public int getBid() {
                 return bid;
@@ -149,12 +149,50 @@ public class TeaListsSearchModel{
                 this.name = name;
             }
 
-            public List<?> getChildren() {
+            public List<CateChilde> getChildren() {
                 return children;
             }
 
-            public void setChildren(List<?> children) {
+            public void setChildren(List<CateChilde> children) {
                 this.children = children;
+            }
+        }
+        public static class CateChilde{
+            private String created;
+            private String is_new;
+            private String name;
+            private String sid;
+
+            public String getCreated() {
+                return created;
+            }
+
+            public void setCreated(String created) {
+                this.created = created;
+            }
+
+            public String getIs_new() {
+                return is_new;
+            }
+
+            public void setIs_new(String is_new) {
+                this.is_new = is_new;
+            }
+
+            public String getName() {
+                return name;
+            }
+
+            public void setName(String name) {
+                this.name = name;
+            }
+
+            public String getSid() {
+                return sid;
+            }
+
+            public void setSid(String sid) {
+                this.sid = sid;
             }
         }
 

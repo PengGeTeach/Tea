@@ -6,4 +6,5 @@
     <color name="text_gray">#aaa</color>
     <color name="dull_red">#ac4949</color>
     <color name="dark_gray">#6666</color>
+    <color name="text_dark_red">#b64a07</color>
 </resources>
