@@ -12,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textColor="@drawable/selector_cha_text"
+            android:textColor="@drawable/item_text_selector"
             android:layout_marginLeft="20dp"
             android:text="主要"/>
 

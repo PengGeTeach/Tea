@@ -1,6 +1,7 @@
 package com.phone1000.chayu.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
+import com.phone1000.chayu.modles.ArticleBean;
+import com.phone1000.chayu.modles.ArticleSourceBean;
 import com.phone1000.chayu.modles.HomePageModel;
 
 import org.xutils.x;
@@ -23,11 +27,13 @@ import java.util.List;
 public class HomePageWenZhangAdapter extends RecyclerView.Adapter<HomePageWenZhangAdapter.ViewHolder> implements View.OnClickListener {
 
     private static final String TAG = HomePageWenZhangAdapter.class.getSimpleName();
-    private List<HomePageModel.DataBean.ArticleBean> data;
+    private List<ArticleBean> data;
     private LayoutInflater inflater;
+    private Context context;
 
 
-    public HomePageWenZhangAdapter(Context context, List<HomePageModel.DataBean.ArticleBean> data) {
+    public HomePageWenZhangAdapter(Context context, List<ArticleBean> data) {
+        this.context=context;
         inflater=LayoutInflater.from(context);
         if (data != null) {
             this.data=data;
@@ -46,16 +52,16 @@ public class HomePageWenZhangAdapter extends RecyclerView.Adapter<HomePageWenZha
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        HomePageModel.DataBean.ArticleBean articleBean = data.get(position);
-        HomePageModel.DataBean.ArticleBean.SourceBean source = articleBean.getSource();
+        ArticleBean articleBean = data.get(position);
+        ArticleSourceBean source = articleBean.getSource();
+
+        holder.itemView.setTag(articleBean);
+        holder.itemView.setOnClickListener(this);
+
         holder.title.setText(articleBean.getTitle());
-        holder.title.setTag(articleBean);
-        holder.title.setOnClickListener(this);
 
 
         x.image().bind(holder.image,articleBean.getThumb());
-        holder.image.setTag(articleBean);
-        holder.image.setOnClickListener(this);
 
 
         switch (articleBean.getCommend()) {
@@ -72,18 +78,12 @@ public class HomePageWenZhangAdapter extends RecyclerView.Adapter<HomePageWenZha
                 holder.tag.setText("专题| ");
                 break;
         }
-        holder.tag.setTag(articleBean);
         holder.tag.setOnClickListener(this);
 
-//        holder.title.setText(articleBean.getTitle());
         holder.text1.setText(source.getSuports());
-        holder.text1.setTag(articleBean);
-        holder.text1.setOnClickListener(this);
 
 
         holder.text2.setText(source.getClicks());
-        holder.text2.setTag(articleBean);
-        holder.text2.setOnClickListener(this);
 
     }
 
@@ -92,7 +92,7 @@ public class HomePageWenZhangAdapter extends RecyclerView.Adapter<HomePageWenZha
         return data!=null?data.size():0;
     }
 
-    public void updataRes(List<HomePageModel.DataBean.ArticleBean> data) {
+    public void updataRes(List<ArticleBean> data) {
         if (data != null) {
             this.data.clear();
             this.data.addAll(data);
@@ -104,27 +104,11 @@ public class HomePageWenZhangAdapter extends RecyclerView.Adapter<HomePageWenZha
     @Override
     public void onClick(View v) {
 
-        switch (v.getId()) {
-            case R.id.item_wenzhang_homepage_image:
-                Log.e(TAG, "onClick: image" );
-                break;
-            case R.id.item_wenzhang_homepage_tag:
-                Log.e(TAG, "onClick: tag" );
-                break;
-            case R.id.item_wenzhang_homepage_title:
-
-                Log.e(TAG, "onClick: title" );
-                break;
-            case R.id.item_wenzhang_homepage_text1:
-
-                Log.e(TAG, "onClick: text1" );
-                break;
-            case R.id.item_wenzhang_homepage_text2:
-
-
-                Log.e(TAG, "onClick: text2" );
-                break;
-        }
+        ArticleBean bean = (ArticleBean) v.getTag();
+        String url = bean.getSource().getUrl();
+        Intent intent = new Intent(context, DetailsInFormation.class);
+        intent.putExtra("path",url);
+        context.startActivity(intent);
 
 
     }

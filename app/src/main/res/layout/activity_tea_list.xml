@@ -32,7 +32,7 @@
             android:gravity="center"
             android:text="绿茶"
             android:textColor="@drawable/selector_cha_text"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
         <CheckBox
             android:id="@+id/tea_list_pingfen"
@@ -44,7 +44,7 @@
             android:gravity="center"
             android:text="评分"
             android:textColor="@drawable/selector_cha_text"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
         <CheckBox
             android:id="@+id/tea_list_pinjian"
@@ -56,7 +56,7 @@
             android:gravity="center"
             android:text="评鉴年份"
             android:textColor="@drawable/selector_cha_text"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
         <CheckBox
             android:id="@+id/tea_list_chayang"
@@ -68,7 +68,7 @@
             android:gravity="center"
             android:text="茶样存库"
             android:textColor="@drawable/selector_cha_text"
-            android:textSize="18sp" />
+            android:textSize="15sp" />
 
     </LinearLayout>
 

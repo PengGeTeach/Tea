@@ -5,4 +5,8 @@ package com.phone1000.chayu.modles;
  */
 public interface TeaChldeClickListenter {
     void callMethod(String bid,String sid);
+    void changeTeaType(String teaTypeName);
+    void changePingFentext(String pingfenName);
+    void changePingjiantext(String pingJianName);
+
 }

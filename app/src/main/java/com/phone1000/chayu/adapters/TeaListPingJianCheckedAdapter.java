@@ -5,13 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.modles.TeaListsSearchModel;
-
-import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +16,13 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/11/29 0029.
  */
-public class TeaList2CheckedAdapter extends BaseAdapter implements View.OnClickListener {
+public class TeaListPingJianCheckedAdapter extends BaseAdapter {
 
-    private List<TeaListsSearchModel.DataBean.CateChilde> data;
+    private static final String TAG = TeaListPingJianCheckedAdapter.class.getSimpleName();
+    private List<TeaListsSearchModel.DataBean.PingjiannianfenBean> data;
     private LayoutInflater inflater;
-    private OnList2ItemClickListener listener;
 
-    public void setListener(OnList2ItemClickListener listener) {
-        this.listener = listener;
-    }
-
-    public TeaList2CheckedAdapter(Context context, List<TeaListsSearchModel.DataBean.CateChilde> data){
+    public TeaListPingJianCheckedAdapter(Context context, List<TeaListsSearchModel.DataBean.PingjiannianfenBean> data){
         inflater=LayoutInflater.from(context);
         if (data != null) {
             this.data=data;
@@ -38,7 +31,7 @@ public class TeaList2CheckedAdapter extends BaseAdapter implements View.OnClickL
         }
     }
 
-    public void updateRes(List<TeaListsSearchModel.DataBean.CateChilde> data){
+    public void updateRes(List<TeaListsSearchModel.DataBean.PingjiannianfenBean> data){
         if (data != null) {
             this.data.clear();
             this.data.addAll(data);
@@ -52,7 +45,7 @@ public class TeaList2CheckedAdapter extends BaseAdapter implements View.OnClickL
     }
 
     @Override
-    public TeaListsSearchModel.DataBean.CateChilde getItem(int position) {
+    public TeaListsSearchModel.DataBean.PingjiannianfenBean getItem(int position) {
         return data.get(position);
     }
 
@@ -65,41 +58,30 @@ public class TeaList2CheckedAdapter extends BaseAdapter implements View.OnClickL
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder=null;
         if (convertView == null) {
-            convertView=inflater.inflate(R.layout.item_fragment_tea_checked_list2,parent,false);
+            convertView=inflater.inflate(R.layout.item_fragment_pingfen_pingjian_checked_list,parent,false);
             holder=new ViewHolder(convertView);
             convertView.setTag(holder);
         }else {
             holder= (ViewHolder) convertView.getTag();
-
         }
-        TeaListsSearchModel.DataBean.CateChilde item = getItem(position);
-        holder.name.setTag(item);
-        holder.name.setText(item.getName());
+
+        holder.name.setText(getItem(position).getName());
+
 
 
         return convertView;
     }
 
-    @Override
-    public void onClick(View v) {
-        TeaListsSearchModel.DataBean.CateChilde childe = (TeaListsSearchModel.DataBean.CateChilde) v.getTag();
-        listener.getItemBean(childe);
-
-    }
 
     private class ViewHolder{
-
 
         TextView name;
 
         public ViewHolder(View itemView){
-
             name= (TextView) itemView.findViewById(R.id.item_fragment_tea_checked_list2_name);
 
         }
     }
-    public interface OnList2ItemClickListener{
-        void getItemBean(TeaListsSearchModel.DataBean.CateChilde childeBean);
-    }
+
 
 }

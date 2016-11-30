@@ -1,6 +1,7 @@
 package com.phone1000.chayu.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
+import com.phone1000.chayu.modles.GroupBean;
+import com.phone1000.chayu.modles.GroupSourceBean;
 import com.phone1000.chayu.modles.HomePageModel;
+import com.phone1000.chayu.path.UtilPath;
 
 import org.xutils.x;
 
@@ -19,13 +24,15 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/11/28 0028.
  */
-public class HomePageQuanZiAdapter extends RecyclerView.Adapter<HomePageQuanZiAdapter.ViewHolder> {
+public class HomePageQuanZiAdapter extends RecyclerView.Adapter<HomePageQuanZiAdapter.ViewHolder> implements View.OnClickListener {
 
-    private List<HomePageModel.DataBean.GroupBean> data;
+    private List<GroupBean> data;
     private LayoutInflater inflater;
+    private Context context;
 
 
-    public HomePageQuanZiAdapter(Context context, List<HomePageModel.DataBean.GroupBean> data) {
+    public HomePageQuanZiAdapter(Context context, List<GroupBean> data) {
+        this.context=context;
         inflater=LayoutInflater.from(context);
         if (data != null) {
             this.data=data;
@@ -44,8 +51,8 @@ public class HomePageQuanZiAdapter extends RecyclerView.Adapter<HomePageQuanZiAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        HomePageModel.DataBean.GroupBean groupBean = data.get(position);
-        HomePageModel.DataBean.GroupBean.SourceBeanX source = groupBean.getSource();
+        GroupBean groupBean = data.get(position);
+        GroupSourceBean source = groupBean.getSource();
         switch (groupBean.getResource_type()) {
             case "3":
                 holder.text1.setText("关注: "+source.getAttention_num());
@@ -62,6 +69,9 @@ public class HomePageQuanZiAdapter extends RecyclerView.Adapter<HomePageQuanZiAd
 
         x.image().bind(holder.image,groupBean.getThumb());
 
+        holder.itemView.setTag(groupBean);
+        holder.itemView.setOnClickListener(this);
+
 
     }
 
@@ -70,13 +80,22 @@ public class HomePageQuanZiAdapter extends RecyclerView.Adapter<HomePageQuanZiAd
         return data!=null?data.size():0;
     }
 
-    public void updataRes(List<HomePageModel.DataBean.GroupBean> data) {
+    public void updataRes(List<GroupBean> data) {
         if (data != null) {
             this.data.clear();
             this.data.addAll(data);
             notifyDataSetChanged();
         }
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        GroupBean bean = (GroupBean) v.getTag();
+        String url = UtilPath.TEA_XIANGQING+bean.getResource_id();
+        Intent intent = new Intent(context, DetailsInFormation.class);
+        intent.putExtra("path",url);
+        context.startActivity(intent);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
