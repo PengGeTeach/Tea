@@ -20,14 +20,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.activity.TeaListActivity;
 import com.phone1000.chayu.adapters.HomePageQuanZiAdapter;
 import com.phone1000.chayu.adapters.HomePageShiJiAdapter;
 import com.phone1000.chayu.adapters.HomePageWenZhangAdapter;
 import com.phone1000.chayu.adapters.TeaCommImageAdapter;
+import com.phone1000.chayu.modles.ArticleBean;
+import com.phone1000.chayu.modles.GroupBean;
+import com.phone1000.chayu.modles.HomeDataBean;
 import com.phone1000.chayu.modles.HomePageModel;
-import com.phone1000.chayu.modles.TagEvent;
+import com.phone1000.chayu.modles.ShiJIBean;
+import com.phone1000.chayu.modles.SlideBean;
+import com.phone1000.chayu.modles.TeaCateBean;
+import com.phone1000.chayu.modles.TeaListEvent;
+import com.phone1000.chayu.path.UtilPath;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.Callback;
@@ -41,7 +49,7 @@ import java.util.List;
  * Created by Administrator on 2016/11/27 0027.
  */
 public class HomeFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener {
-    public static final String TAG = ShiJiFragment.class.getSimpleName();
+    public static final String TAG = HomeFragment.class.getSimpleName();
     private View layout;
     private ViewPager mViewPager;
     private TeaCommImageAdapter mVPAdapter;
@@ -50,7 +58,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     private LinearLayout mPoint;
     private TextView mVPType;
     private TextView mVPTitle;
-    private List<HomePageModel.DataBean.SlideBean> slide;
+    private List<SlideBean> slide;
     private int proviceindex = 0;
     private HorizontalScrollView mHScroll;
     private LinearLayout mHscrollCon;
@@ -125,7 +133,12 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     //----------------------------------- 网络下载 -----------------------
     private void setUpViewFromNet() {
-        RequestParams requestParams = new RequestParams(HomePagerUrl);
+        RequestParams requestParams = new RequestParams(UtilPath.HomePagerUrl);
+        requestParams.addParameter("imei","91f64b1a7dbe8b9e");
+        requestParams.addParameter("agent","5");
+        requestParams.addParameter("version","5");
+        requestParams.addParameter("source","3");
+        requestParams.addParameter("versionCode","2.2.4");
         x.http().post(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -134,21 +147,22 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                 Gson gson = new Gson();
 
                 HomePageModel homePageModel = gson.fromJson(result, HomePageModel.class);
-                HomePageModel.DataBean data = homePageModel.getData();
+                HomeDataBean data = homePageModel.getData();
 
-                List<HomePageModel.DataBean.SlideBean> slide = data.getSlide();
+
+                List<SlideBean> slide = data.getSlide();
                 setUpViewPager(slide);
 
-                List<HomePageModel.DataBean.TeaCateBean> teaCate = data.getTeaCate();
+                List<TeaCateBean> teaCate = data.getTeaCate();
                 setUpChaping(teaCate);
 
-                List<HomePageModel.DataBean.ShijiBean> shiji = data.getShiji();
+                List<ShiJIBean> shiji = data.getShiji();
                 mShijiadapter.updataRes(shiji);
 
-                List<HomePageModel.DataBean.GroupBean> group = data.getGroup();
+                List<GroupBean> group = data.getGroup();
                 mQZAdapter.updataRes(group);
 
-                List<HomePageModel.DataBean.ArticleBean> article = data.getArticle();
+                List<ArticleBean> article = data.getArticle();
                 mWZAdapter.updataRes(article);
 
 
@@ -176,7 +190,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     //----------------------- 茶评 刷新  水平滚动条-------------------------------
 
-    private void setUpChaping(List<HomePageModel.DataBean.TeaCateBean> teaCate) {
+    private void setUpChaping(List<TeaCateBean> teaCate) {
 
 
         for (int i = 0; i < teaCate.size(); i++) {
@@ -221,12 +235,14 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     //------------------------ ViewPager 的刷新 --------------------
 
-    private void setUpViewPager(List<HomePageModel.DataBean.SlideBean> slide) {
+    private void setUpViewPager(List<SlideBean> slide) {
         this.slide = slide;
 
         List<ImageView> data = new ArrayList<>();
         for (int i = 0; i < slide.size(); i++) {
             ImageView imageView = new ImageView(getContext());
+            imageView.setTag(i);
+            imageView.setOnClickListener(this);
             x.image().bind(imageView, slide.get(i).getThumb());
             data.add(imageView);
             View view = new View(getContext());
@@ -264,10 +280,16 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     @Override
     public void onPageSelected(int position) {
 
+
+        Log.e(TAG, "onPageSelected: --------------------"+position );
+
+
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
+        Log.e(TAG, "onPageScrollStateChanged: ----------------"+state );
 
     }
 
@@ -276,13 +298,22 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
         if (v instanceof LinearLayout) {
             LinearLayout linearLayout = (LinearLayout) v;
-            int tag = (int) linearLayout.getTag();
+            int tag = (int) linearLayout.getTag()+1;
             Log.e(TAG, "onClick: "+tag );
 
-            TagEvent tagEvent = new TagEvent(0x100);
-            tagEvent.setTag(tag);
+            TeaListEvent tagEvent = new TeaListEvent(0x110);
+            tagEvent.setBid(tag+"");
             EventBus.getDefault().postSticky(tagEvent);
             Intent intent = new Intent(getContext(), TeaListActivity.class);
+            startActivity(intent);
+        }else if (v instanceof ImageView){
+            ImageView image = (ImageView) v;
+            int position = (int) image.getTag();
+            String url = slide.get(position).getUrl();
+            Log.e(TAG, "onClick: -----Image--------"+position );
+            Intent intent = new Intent(getActivity(), DetailsInFormation.class);
+
+            intent.putExtra("path",url);
             startActivity(intent);
 
         }

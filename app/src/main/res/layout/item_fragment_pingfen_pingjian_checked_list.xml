@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/item_fragment_tea_checked_list2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@drawable/item_text_selector"
+            android:layout_marginLeft="20dp"
+            android:text="主要"
+            android:drawableRight="@mipmap/jiantou_icon1"/>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

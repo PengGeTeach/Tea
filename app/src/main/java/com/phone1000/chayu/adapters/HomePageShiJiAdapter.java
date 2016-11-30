@@ -1,6 +1,7 @@
 package com.phone1000.chayu.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,8 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.modles.HomePageModel;
+import com.phone1000.chayu.modles.ShiJIBean;
 
 import org.xutils.x;
 
@@ -20,13 +23,15 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/11/28 0028.
  */
-public class HomePageShiJiAdapter extends RecyclerView.Adapter<HomePageShiJiAdapter.ViewHolder> {
+public class HomePageShiJiAdapter extends RecyclerView.Adapter<HomePageShiJiAdapter.ViewHolder> implements View.OnClickListener {
 
-    private List<HomePageModel.DataBean.ShijiBean> data;
+    private List<ShiJIBean> data;
     private LayoutInflater inflater;
+    private Context context;
 
 
-    public HomePageShiJiAdapter(Context context,List<HomePageModel.DataBean.ShijiBean> data) {
+    public HomePageShiJiAdapter(Context context,List<ShiJIBean> data) {
+        this.context=context;
         inflater=LayoutInflater.from(context);
         if (data != null) {
             this.data=data;
@@ -45,7 +50,11 @@ public class HomePageShiJiAdapter extends RecyclerView.Adapter<HomePageShiJiAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        HomePageModel.DataBean.ShijiBean shijiBean = data.get(position);
+        ShiJIBean shijiBean = data.get(position);
+//
+        holder.itemView.setTag(shijiBean);
+        holder.itemView.setOnClickListener(this);
+
         holder.text1.setText(shijiBean.getTags()+" |");
         holder.text2.setText(shijiBean.getTitle());
 
@@ -59,12 +68,22 @@ public class HomePageShiJiAdapter extends RecyclerView.Adapter<HomePageShiJiAdap
         return data!=null?data.size():0;
     }
 
-    public void updataRes(List<HomePageModel.DataBean.ShijiBean> data) {
+    public void updataRes(List<ShiJIBean> data) {
         if (data != null) {
             this.data.clear();
             this.data.addAll(data);
             notifyDataSetChanged();
         }
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        ShiJIBean bean = (ShiJIBean) v.getTag();
+        String url = bean.getUrl();
+        Intent intent = new Intent(context, DetailsInFormation.class);
+        intent.putExtra("path",url);
+        context.startActivity(intent);
 
     }
 
