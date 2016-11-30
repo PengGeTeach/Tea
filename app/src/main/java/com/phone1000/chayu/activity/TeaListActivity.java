@@ -9,15 +9,12 @@ import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.ListView;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.phone1000.chayu.R;
-import com.phone1000.chayu.fragments.HomeFragment;
 import com.phone1000.chayu.fragments.TeaListCheckedListFragment;
 import com.phone1000.chayu.fragments.TeaListConListFragment;
-import com.phone1000.chayu.modles.TagEvent;
+import com.phone1000.chayu.modles.TeaChldeClickListenter;
 import com.phone1000.chayu.modles.TeaListEvent;
 import com.phone1000.chayu.weidgt.TopBar;
 
@@ -27,13 +24,18 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class TeaListActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
+public class TeaListActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener,TeaChldeClickListenter {
 
     private static final String TAG = TeaListActivity.class.getSimpleName();
     private TopBar mTopBar;
     private FrameLayout mListViewCon;
     private Fragment showfragment;
-    private RadioGroup mRadioGroup;
+    private CheckBox mTeaType;
+    private CheckBox mPingfen;
+    private CheckBox mPingJian;
+    private CheckBox mChaYang;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +48,21 @@ public class TeaListActivity extends AppCompatActivity implements RadioGroup.OnC
         mTopBar = (TopBar) findViewById(R.id.tealist_activity_top_bar);
         mTopBar.logoVisible(false);
 
+        mTeaType = (CheckBox) findViewById(R.id.tea_list_tea);
+        mTeaType.setOnCheckedChangeListener(this);
+
+        mPingfen = (CheckBox) findViewById(R.id.tea_list_pingfen);
+        mPingfen.setOnCheckedChangeListener(this);
+
+        mPingJian = (CheckBox) findViewById(R.id.tea_list_pinjian);
+        mPingJian.setOnCheckedChangeListener(this);
+
+        mChaYang = (CheckBox) findViewById(R.id.tea_list_chayang);
+        mChaYang.setOnCheckedChangeListener(this);
+
 
         mListViewCon = (FrameLayout) findViewById(R.id.tea_list_listview_container);
 
-        mRadioGroup = (RadioGroup) findViewById(R.id.tea_list_radiogroup);
-        mRadioGroup.setOnCheckedChangeListener(this);
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -62,6 +74,8 @@ public class TeaListActivity extends AppCompatActivity implements RadioGroup.OnC
 
 
     }
+
+
 
     @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)
     public void onEvent(TeaListEvent event){
@@ -96,34 +110,9 @@ public class TeaListActivity extends AppCompatActivity implements RadioGroup.OnC
     }
 
 
-    @Override
-    public void onCheckedChanged(RadioGroup group, int checkedId) {
-
-        switch (checkedId) {
-            case R.id.tea_list_tea:
-                //茶种类
-
-                switchpage(TeaListCheckedListFragment.TAG,TeaListCheckedListFragment.class);
-
-                break;
-            case R.id.tea_list_pingfen:
-                //评分
-
-                break;
-            case R.id.tea_list_pinjian:
-                //评鉴
-
-                break;
-            case R.id.tea_list_chayang:
-                //茶样
-
-                break;
-        }
 
 
-    }
-
-    private void switchpage(String tag, Class<? extends Fragment> cls) {
+    public void switchpage(String tag, Class<? extends Fragment> cls) {
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
@@ -149,4 +138,42 @@ public class TeaListActivity extends AppCompatActivity implements RadioGroup.OnC
     }
 
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+        switch (buttonView.getId()) {
+            case R.id.tea_list_tea:
+                //茶种类
+
+                switchpage(TeaListCheckedListFragment.TAG,TeaListCheckedListFragment.class);
+                if (showfragment instanceof TeaListCheckedListFragment) {
+                    ((TeaListCheckedListFragment) showfragment).setItemclicklistener(this);
+                }
+
+                break;
+            case R.id.tea_list_pingfen:
+                //评分
+
+                break;
+            case R.id.tea_list_pinjian:
+                //评鉴
+
+                break;
+            case R.id.tea_list_chayang:
+                //茶样
+
+                break;
+        }
+    }
+
+    @Override
+    public void callMethod(String bid,String sid) {
+
+        Log.e(TAG, "callMethod: bid ------------sid-------------"+bid+"-------------"+sid );
+
+        switchpage(TeaListConListFragment.TAG,TeaListConListFragment.class);
+
+
+
+    }
 }

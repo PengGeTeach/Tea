@@ -27,7 +27,6 @@ import com.phone1000.chayu.adapters.HomePageShiJiAdapter;
 import com.phone1000.chayu.adapters.HomePageWenZhangAdapter;
 import com.phone1000.chayu.adapters.TeaCommImageAdapter;
 import com.phone1000.chayu.modles.HomePageModel;
-import com.phone1000.chayu.modles.TagEvent;
 import com.phone1000.chayu.modles.TeaListEvent;
 
 import org.greenrobot.eventbus.EventBus;

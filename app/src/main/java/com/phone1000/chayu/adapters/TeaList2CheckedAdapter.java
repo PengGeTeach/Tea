@@ -79,7 +79,6 @@ public class TeaList2CheckedAdapter extends BaseAdapter implements View.OnClickL
         }
         TeaListsSearchModel.DataBean.CateChilde item = getItem(position);
         holder.name.setTag(item);
-        holder.name.setOnClickListener(this);
         holder.name.setText(item.getName());
 
 

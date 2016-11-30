@@ -81,7 +81,7 @@ public class TeaList1CheckedAdapter extends BaseAdapter implements View.OnClickL
         }
         TeaListsSearchModel.DataBean.CategoryListBean item = getItem(position);
 
-        convertView.setTag(item);
+//        convertView.setTag(item);
         Log.e(TAG, "getView: 发送"+item );
         holder.name.setText(item.getName());
         x.image().bind(holder.image,item.getIco());

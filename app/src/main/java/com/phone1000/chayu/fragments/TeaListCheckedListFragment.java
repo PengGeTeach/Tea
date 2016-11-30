@@ -14,9 +14,12 @@ import com.google.gson.Gson;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.adapters.TeaList1CheckedAdapter;
 import com.phone1000.chayu.adapters.TeaList2CheckedAdapter;
+import com.phone1000.chayu.modles.TeaChldeClickListenter;
+import com.phone1000.chayu.modles.TeaListEvent;
 import com.phone1000.chayu.modles.TeaListsSearchModel;
 import com.phone1000.chayu.path.UtilPath;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
@@ -33,6 +36,14 @@ public class TeaListCheckedListFragment extends Fragment implements TeaList1Chec
     private ListView mListView2;
     private TeaList1CheckedAdapter adapter;
     private TeaList2CheckedAdapter adapter1;
+    private List<TeaListsSearchModel.DataBean.CategoryListBean> category_list;
+    private List<TeaListsSearchModel.DataBean.CateChilde> children;
+    private int bid;
+    private TeaChldeClickListenter itemclicklistener;
+
+    public void setItemclicklistener(TeaChldeClickListenter itemclicklistener) {
+        this.itemclicklistener = itemclicklistener;
+    }
 
     @Nullable
     @Override
@@ -75,12 +86,14 @@ public class TeaListCheckedListFragment extends Fragment implements TeaList1Chec
         params.addParameter("source","3");
         params.addParameter("versionCode","2.2.4");
         x.http().post(params, new Callback.CommonCallback<String>() {
+
+
             @Override
             public void onSuccess(String result) {
                 Log.e(TAG, "onSuccess: " );
                 Gson gson = new Gson();
                 TeaListsSearchModel model = gson.fromJson(result, TeaListsSearchModel.class);
-                List<TeaListsSearchModel.DataBean.CategoryListBean> category_list = model.getData().getCategory_list();
+                category_list = model.getData().getCategory_list();
                 adapter.updateRes(category_list);
             }
 
@@ -126,12 +139,39 @@ public class TeaListCheckedListFragment extends Fragment implements TeaList1Chec
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (view.getId()) {
+
+        Log.e(TAG, "onItemClick: 最外层"+position );
+
+        switch (parent.getId()) {
             case R.id.fragment_tea_checked_list1:
+
+                Log.e(TAG, "onItemClick: "+position );
+                if (category_list != null) {
+                    TeaListsSearchModel.DataBean.CategoryListBean categoryListBean = category_list.get(position);
+                    bid = categoryListBean.getBid();
+                    if (categoryListBean.getChildren() != null) {
+                        children = categoryListBean.getChildren();
+                        adapter1.updateRes(children);
+                    }
+                }   else {
+
+                }
 
                 break;
 
             case R.id.fragment_tea_checked_list2:
+
+                if (children != null) {
+
+                    TeaListEvent event = new TeaListEvent(0x110);
+                    event.setSid(children.get(position).getSid());
+                    event.setBid(bid+"");
+                    EventBus.getDefault().postSticky(event);
+                    itemclicklistener.callMethod(bid+"",children.get(position).getSid());
+
+
+                }
+
 
                 break;
 
