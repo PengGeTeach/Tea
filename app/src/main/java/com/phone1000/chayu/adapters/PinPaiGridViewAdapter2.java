@@ -1,11 +1,13 @@
 package com.phone1000.chayu.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.phone1000.chayu.PinPaiActivity;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.modles.ChaLeiModle;
 import com.phone1000.chayu.utils.TeachBaseAdapter;
@@ -23,12 +25,14 @@ public class PinPaiGridViewAdapter2 extends TeachMultiTypeAdapter<ChaLeiModle.Da
     private SendPinpaiPositiob sendPinpaiPositiob;
     private int position;
     private List<ChaLeiModle.DataBean.BrandListBean.BrandListChild> data;
+    private Context context;
 
     public PinPaiGridViewAdapter2(Context context, List<ChaLeiModle.DataBean.BrandListBean.BrandListChild> data,SendPinpaiPositiob sendPinpaiPositiob,int position, int... layoutIds) {
         super(context, data, layoutIds);
         this.sendPinpaiPositiob = sendPinpaiPositiob;
         this.position = position;
         this.data = data;
+        this.context = context;
     }
 
     @Override
@@ -37,6 +41,12 @@ public class PinPaiGridViewAdapter2 extends TeachMultiTypeAdapter<ChaLeiModle.Da
         if(tag ==0){
             data.remove(0);
             sendPinpaiPositiob.sendposition(tag);
+        }else{
+
+            Intent intent = new Intent(context, PinPaiActivity.class);
+            intent.putExtra("name",data.get(tag).getName());
+            intent.putExtra("brandid",data.get(tag).getId());
+            context.startActivity(intent);
         }
     }
 
@@ -57,6 +67,7 @@ public class PinPaiGridViewAdapter2 extends TeachMultiTypeAdapter<ChaLeiModle.Da
                 TextView textView = (TextView) holder.getView(R.id.grid_text);
                 textView.setText(item.getName());
                 textView.setTag(i);
+                textView.setOnClickListener(this);
                 break;
         }
     }

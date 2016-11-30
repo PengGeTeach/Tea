@@ -50,6 +50,4 @@ public class PinPaiGridViewAdapter extends TeachBaseAdapter<ChaLeiModle.DataBean
         void sendpingpaiitem(int position);
     }
 
-
-
 }

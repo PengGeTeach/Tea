@@ -1,5 +1,6 @@
 package com.phone1000.chayu.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,12 +8,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.adapters.PinPaiFragmentAdapter;
 import com.phone1000.chayu.event.Chapinevent;
 import com.phone1000.chayu.modles.TeaComm;
+import com.phone1000.chayu.modles.TeaListEvent;
 import com.phone1000.chayu.utils.ListViewUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -21,7 +24,7 @@ import org.greenrobot.eventbus.Subscribe;
 /**
  * Created by Administrator on 2016/11/28 0028.
  */
-public class PingPaiFragment extends Fragment{
+public class PingPaiFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private static final String TAG = PingPaiFragment.class.getSimpleName();
     private View layout;
@@ -48,6 +51,8 @@ public class PingPaiFragment extends Fragment{
 
         mExListView = ((ExpandableListView) layout.findViewById(R.id.expanded_lv));
 
+        mExListView.setOnItemClickListener(this);
+
     }
 
     @Override
@@ -73,4 +78,15 @@ public class PingPaiFragment extends Fragment{
         ListViewUtils.setListViewHeightBasedOnChildren(mExListView);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        if("全部".equals(data.getData().getCategory_list().get(i).getName())) {
+            TeaListEvent event = new TeaListEvent(0x100);
+            event.setBid(data.getData().getCategory_list().get(i).getBid()+"");
+            event.setSid(null);
+            EventBus.getDefault().postSticky(event);
+            //Intent intent = new Intent(getContext(), TeaListActivity.class);
+            //startActivity(intent);
+        }
+    }
 }

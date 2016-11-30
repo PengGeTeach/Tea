@@ -61,5 +61,9 @@ public class TopBar extends LinearLayout
 
     }
 
+    public void rightbtn(int res){
+        mTopbtn.setImageResource(res);
+    }
+
 
 }

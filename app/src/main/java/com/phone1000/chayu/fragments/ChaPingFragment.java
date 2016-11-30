@@ -1,7 +1,6 @@
 package com.phone1000.chayu.fragments;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -13,7 +12,6 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,19 +19,14 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.phone1000.chayu.DetailsInFormation;
-import com.phone1000.chayu.MainActivity;
 import com.phone1000.chayu.R;
-import com.phone1000.chayu.TeachApp;
 import com.phone1000.chayu.adapters.TeaCommFragmentAdapter;
 import com.phone1000.chayu.adapters.TeaCommImageAdapter;
-import com.phone1000.chayu.constants.HttpParams;
 import com.phone1000.chayu.event.Chapinevent;
 import com.phone1000.chayu.modles.TeaComm;
 import com.phone1000.chayu.path.UtilPath;
 import com.phone1000.chayu.weidgt.CustomViewPager;
 import com.squareup.picasso.Picasso;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.xutils.common.Callback;
@@ -42,8 +35,6 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
 
 
 public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener {

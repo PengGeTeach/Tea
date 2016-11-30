@@ -1,5 +1,6 @@
 package com.phone1000.chayu.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,8 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.google.gson.Gson;
+import com.phone1000.chayu.PinPaiActivity;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.adapters.GridViewAdapter;
 import com.phone1000.chayu.adapters.PinPaiGridViewAdapter;
@@ -27,7 +30,7 @@ import org.xutils.x;
 /**
  * Created by Administrator on 2016/11/28 0028.
  */
-public class ChaLeiFragment extends Fragment implements PinPaiGridViewAdapter.Pingpaiitem ,PinPaiGridViewAdapter2.SendPinpaiPositiob {
+public class ChaLeiFragment extends Fragment implements PinPaiGridViewAdapter.Pingpaiitem ,PinPaiGridViewAdapter2.SendPinpaiPositiob, AdapterView.OnItemClickListener {
 
     private static final String TAG = ChaLeiFragment.class.getSimpleName();
     private View layout;
@@ -104,6 +107,7 @@ public class ChaLeiFragment extends Fragment implements PinPaiGridViewAdapter.Pi
     private void initView() {
 
         mGridViewRemen = (MyGridView) layout.findViewById(R.id.gridview_remenpinpai);
+        mGridViewRemen.setOnItemClickListener(this);
         mGridviewpinpai = ((MyGridView) layout.findViewById(R.id.gridview_pinpai));
 
     }
@@ -134,8 +138,6 @@ public class ChaLeiFragment extends Fragment implements PinPaiGridViewAdapter.Pi
             mGridviewpinpai.setNumColumns(3);
             mGridviewpinpai.setAdapter(pinPaiGridViewAdapter2);
 
-
-
         }
 
     }
@@ -151,5 +153,16 @@ public class ChaLeiFragment extends Fragment implements PinPaiGridViewAdapter.Pi
 
         //chaLeiModle.getData().getBrand_list().get(position).getList().remove(0);
 
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        //chaLeiModle.getData().getHot_list().get(i)
+        Log.e(TAG, "onItemClick: "+chaLeiModle.getData().getHot_list().get(i).getName()+""+ chaLeiModle.getData().getHot_list().get(i).getBrandid());
+        Intent intent = new Intent(getActivity(), PinPaiActivity.class);
+        intent.putExtra("name",chaLeiModle.getData().getHot_list().get(i).getName());
+        intent.putExtra("brandid",chaLeiModle.getData().getHot_list().get(i).getBrandid()+"");
+        startActivity(intent);
     }
 }

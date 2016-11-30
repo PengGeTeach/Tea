@@ -54,13 +54,11 @@ public abstract class TeachBaseAdapter<T> extends BaseAdapter{
 
     @Override
     public int getCount() {
-        Log.e(TAG, "getCount:+"+data.size() );
         return data!=null?data.size():0;
     }
 
     @Override
     public T getItem(int i) {
-        Log.e(TAG, "getItem: "+i );
         return data.get(i);
     }
 
@@ -80,7 +78,6 @@ public abstract class TeachBaseAdapter<T> extends BaseAdapter{
         }else {
             holder = (ViewHolder) view.getTag();
         }
-        Log.e(TAG, "getView: "+i );
 
         //数据加载
         bindData(holder,getItem(i),i);

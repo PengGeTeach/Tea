@@ -14,6 +14,7 @@ import org.xutils.x;
 
 import java.io.IOException;
 
+import cn.sharesdk.framework.ShareSDK;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
@@ -32,6 +33,8 @@ public class TeachApp extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+
+        ShareSDK.initSDK(this);
 
         x.Ext.init(this);
         x.Ext.setDebug(true);

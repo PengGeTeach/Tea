@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
@@ -122,12 +123,14 @@ public class PinPaiFragmentAdapter extends BaseExpandableListAdapter{
             holder = (ViewHolderChild) view.getTag();
         }
 
-        GridViewAdapter gridViewAdapter = new GridViewAdapter(context, data.get(i).getChildren(), R.layout.gridview_item);
+        GridViewAdapter gridViewAdapter = new GridViewAdapter(context, data.get(i).getChildren(),i, R.layout.gridview_item);
 
         for (TeaComm.DataBean.CategoryListBean.Children childen:data.get(i).getChildren()) {
             Log.e(TAG, "getChildView: " +childen.getName());
             childen.getName();
         }
+
+        //holder.myGridView.setOnItemClickListener(this);
 
        holder.myGridView.setAdapter(gridViewAdapter);
 
@@ -140,11 +143,20 @@ public class PinPaiFragmentAdapter extends BaseExpandableListAdapter{
 
         return view;
     }
-
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return true;
     }
+
+   /* @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        Log.e(TAG, "onItemClick: 我点击了"+i );
+        if (view instanceof TextView){
+            Log.e(TAG, "onItemClick: "+"我是textview" );
+        }
+
+    }*/
 
 
     public static class ViewHolderParent{
