@@ -34,4 +34,7 @@ public class CustomViewPager extends ViewPager{
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+
+
+
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:gravity="center_vertical"
+    >
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="20dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/back_icon"
+        android:layout_marginLeft="20dp"
+        />
+
+    <ImageView
+        android:id="@+id/top_share"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/share_dian"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        />
+
+    <ImageView
+        android:id="@+id/share_qq"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/share_qq"
+        android:layout_toLeftOf="@+id/top_share"
+        android:layout_marginLeft="20dp"
+        />
+
+    <ImageView
+        android:id="@+id/share_weixin"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/share_wexi"
+        android:layout_toLeftOf="@+id/share_qq"
+        android:layout_marginLeft="20dp"
+        />
+
+    <ImageView
+        android:id="@+id/share_pengyouquan"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/share_pyq"
+        android:layout_toLeftOf="@+id/share_weixin"
+        android:layout_marginLeft="20dp"
+        />
+
+
+
+</RelativeLayout>
