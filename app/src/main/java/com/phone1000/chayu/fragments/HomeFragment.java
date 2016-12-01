@@ -2,6 +2,9 @@ package com.phone1000.chayu.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -17,9 +20,12 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.activity.TeaListActivity;
@@ -48,13 +54,12 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/11/27 0027.
  */
-public class HomeFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener {
+public class HomeFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, PullToRefreshBase.OnRefreshListener {
     public static final String TAG = HomeFragment.class.getSimpleName();
     private View layout;
     private ViewPager mViewPager;
     private TeaCommImageAdapter mVPAdapter;
 
-    private final String HomePagerUrl = "http://app.chayu.com/chayu/2.0/index";
     private LinearLayout mPoint;
     private TextView mVPType;
     private TextView mVPTitle;
@@ -73,6 +78,33 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     private HomePageQuanZiAdapter mQZAdapter;
     private RecyclerView mWZRecycler;
     private HomePageWenZhangAdapter mWZAdapter;
+    private PullToRefreshScrollView mPulltoRefresh;
+    private ScrollView mScroll;
+
+    private boolean isHSCrollFirstLoading = true;
+    private boolean isVPFirstLoading = true;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+
+            switch (msg.what) {
+                case 100:
+                    mPulltoRefresh.onRefreshComplete();
+                    break;
+                case 0x100:
+// 得到mVp当前页面的索引
+                    int currentItem = mViewPager.getCurrentItem();
+// 要显示的下一个页面的索引
+                    currentItem++;
+// 设置ViewPager显示的页面
+                    mViewPager.setCurrentItem(currentItem % slide.size());
+                    break;
+            }
+
+
+        }
+    };
 
 
     @Nullable
@@ -92,6 +124,13 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     private void initView() {
 
+
+        mPulltoRefresh = (PullToRefreshScrollView) layout.findViewById(R.id.fragment_homepage_scroll);
+        mPulltoRefresh.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+        mPulltoRefresh.setOnRefreshListener(this);
+        mScroll = mPulltoRefresh.getRefreshableView();
+
+        slide = new ArrayList<>();
 
         metrics = new DisplayMetrics();
 // 通过屏幕管理者调用默认显示对象 ，把屏幕的参数信息存放到metrics对象中。屏幕状态，大小，密度等
@@ -126,6 +165,9 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         mWZAdapter = new HomePageWenZhangAdapter(getContext(), null);
         mWZRecycler.setAdapter(mWZAdapter);
 
+        mSJRecycler.setFocusable(false);
+        mQZRecycler.setFocusable(false);
+        mWZRecycler.setFocusable(false);
 
         setUpViewFromNet();
 
@@ -134,11 +176,11 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     //----------------------------------- 网络下载 -----------------------
     private void setUpViewFromNet() {
         RequestParams requestParams = new RequestParams(UtilPath.HomePagerUrl);
-        requestParams.addParameter("imei","91f64b1a7dbe8b9e");
-        requestParams.addParameter("agent","5");
-        requestParams.addParameter("version","5");
-        requestParams.addParameter("source","3");
-        requestParams.addParameter("versionCode","2.2.4");
+        requestParams.addParameter("imei", "91f64b1a7dbe8b9e");
+        requestParams.addParameter("agent", "5");
+        requestParams.addParameter("version", "5");
+        requestParams.addParameter("source", "3");
+        requestParams.addParameter("versionCode", "2.2.4");
         x.http().post(requestParams, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -146,12 +188,15 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
                 Gson gson = new Gson();
 
+
                 HomePageModel homePageModel = gson.fromJson(result, HomePageModel.class);
                 HomeDataBean data = homePageModel.getData();
 
+                HomeFragment.this.slide.clear();
 
                 List<SlideBean> slide = data.getSlide();
-                setUpViewPager(slide);
+                HomeFragment.this.slide.addAll(slide);
+                setUpViewPager();
 
                 List<TeaCateBean> teaCate = data.getTeaCate();
                 setUpChaping(teaCate);
@@ -164,7 +209,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
                 List<ArticleBean> article = data.getArticle();
                 mWZAdapter.updataRes(article);
-
+                mPulltoRefresh.onRefreshComplete();
 
             }
 
@@ -192,29 +237,35 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     private void setUpChaping(List<TeaCateBean> teaCate) {
 
+        if (isHSCrollFirstLoading) {
 
-        for (int i = 0; i < teaCate.size(); i++) {
-            LinearLayout linearLayout = new LinearLayout(getContext());
-            linearLayout.setTag(i);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(screenWidth / 8, ViewPager.LayoutParams.MATCH_PARENT);
-            params.setMargins(30, 0, 15, 0);
-            linearLayout.setLayoutParams(params);
 
-            linearLayout.setGravity(Gravity.CENTER);
-            linearLayout.setOrientation(LinearLayout.VERTICAL);
-            ImageView imageView = new ImageView(getContext());
+            for (int i = 0; i < teaCate.size(); i++) {
+                LinearLayout linearLayout = new LinearLayout(getContext());
+                linearLayout.setTag(teaCate.get(i));
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(screenWidth / 8, ViewPager.LayoutParams.MATCH_PARENT);
+                params.setMargins(30, 0, 15, 0);
+                linearLayout.setLayoutParams(params);
 
-            x.image().bind(imageView, teaCate.get(i).getIco());
+                linearLayout.setGravity(Gravity.CENTER);
+                linearLayout.setOrientation(LinearLayout.VERTICAL);
+                ImageView imageView = new ImageView(getContext());
 
-            TextView textView = new TextView(getContext());
-            textView.setText(teaCate.get(i).getName());
-            textView.setGravity(Gravity.CENTER);
+                x.image().bind(imageView, teaCate.get(i).getIco());
 
-            linearLayout.addView(imageView);
-            linearLayout.addView(textView);
-            mHscrollCon.addView(linearLayout);
+                TextView textView = new TextView(getContext());
+                textView.setText(teaCate.get(i).getName());
+                textView.setGravity(Gravity.CENTER);
 
-            setHScrollListener();
+                linearLayout.addView(imageView);
+                linearLayout.addView(textView);
+                mHscrollCon.addView(linearLayout);
+
+                setHScrollListener();
+
+                isHSCrollFirstLoading = false;
+            }
+
 
         }
 
@@ -223,7 +274,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     //-------------------水平滚动监听--------------
     private void setHScrollListener() {
-        int count=mHscrollCon.getChildCount();
+        int count = mHscrollCon.getChildCount();
 
         for (int i = 0; i < count; i++) {
             LinearLayout childAt = (LinearLayout) mHscrollCon.getChildAt(i);
@@ -235,30 +286,63 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     //------------------------ ViewPager 的刷新 --------------------
 
-    private void setUpViewPager(List<SlideBean> slide) {
-        this.slide = slide;
-
+    private void setUpViewPager() {
         List<ImageView> data = new ArrayList<>();
-        for (int i = 0; i < slide.size(); i++) {
-            ImageView imageView = new ImageView(getContext());
-            imageView.setTag(i);
-            imageView.setOnClickListener(this);
-            x.image().bind(imageView, slide.get(i).getThumb());
-            data.add(imageView);
-            View view = new View(getContext());
-            DisplayMetrics metrics = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, metrics);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, width);
-            layoutParams.setMargins(10, 0, 0, 0);
-            view.setLayoutParams(layoutParams);
-            view.setBackgroundResource(R.mipmap.dian_uncheck);
+        if (isVPFirstLoading) {
 
-            mPoint.addView(view);
+            for (int i = 0; i < slide.size(); i++) {
+                ImageView imageView = new ImageView(getContext());
+                imageView.setTag(i);
+                imageView.setOnClickListener(this);
+                x.image().bind(imageView, slide.get(i).getThumb());
+                data.add(imageView);
+                View view = new View(getContext());
+                DisplayMetrics metrics = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6, metrics);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, width);
+                layoutParams.setMargins(10, 0, 0, 0);
+                view.setLayoutParams(layoutParams);
+                view.setBackgroundResource(R.mipmap.dian_uncheck);
+
+                mPoint.addView(view);
+                isVPFirstLoading = false;
+            }
+            mVPTitle.setText(slide.get(0).getTitle());
+            mVPType.setText(slide.get(0).getTags());
+            mPoint.getChildAt(0).setBackgroundResource(R.mipmap.dian_checked);
+
+        } else if (!isVPFirstLoading) {
+            for (int i = 0; i < slide.size(); i++) {
+                ImageView imageView = new ImageView(getContext());
+                imageView.setTag(i);
+                imageView.setOnClickListener(this);
+                x.image().bind(imageView, slide.get(i).getThumb());
+                data.add(imageView);
+
+            }
+
         }
-        mVPTitle.setText(slide.get(0).getTitle());
-        mVPType.setText(slide.get(0).getTags());
-        mPoint.getChildAt(0).setBackgroundResource(R.mipmap.dian_checked);
+
+
+        // 设置是否进行自动轮播
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+// try {
+// Thread.sleep(3000);
+// } catch (InterruptedException e) {
+// e.printStackTrace();
+// }
+// SystemClock:系统时钟的睡眠方法,不会抛异常.
+                    SystemClock.sleep(3000);
+                    mHandler.sendEmptyMessage(0x100);
+                }
+            }
+        }).start();
+
+
         mVPAdapter.updataRes(data);
 
 
@@ -281,7 +365,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     public void onPageSelected(int position) {
 
 
-        Log.e(TAG, "onPageSelected: --------------------"+position );
+        Log.e(TAG, "onPageSelected: --------------------" + position);
 
 
     }
@@ -289,7 +373,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     @Override
     public void onPageScrollStateChanged(int state) {
 
-        Log.e(TAG, "onPageScrollStateChanged: ----------------"+state );
+        Log.e(TAG, "onPageScrollStateChanged: ----------------" + state);
 
     }
 
@@ -298,25 +382,36 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
         if (v instanceof LinearLayout) {
             LinearLayout linearLayout = (LinearLayout) v;
-            int tag = (int) linearLayout.getTag()+1;
-            Log.e(TAG, "onClick: "+tag );
+            TeaCateBean bean = (TeaCateBean) linearLayout.getTag();
+            String bid = bean.getBid();
+            Log.e(TAG, "onClick: " + bid);
 
             TeaListEvent tagEvent = new TeaListEvent(0x110);
-            tagEvent.setBid(tag+"");
+            tagEvent.setBid(bid);
+            tagEvent.setTeaName(bean.getName());
             EventBus.getDefault().postSticky(tagEvent);
             Intent intent = new Intent(getContext(), TeaListActivity.class);
             startActivity(intent);
-        }else if (v instanceof ImageView){
+        } else if (v instanceof ImageView) {
             ImageView image = (ImageView) v;
             int position = (int) image.getTag();
             String url = slide.get(position).getUrl();
-            Log.e(TAG, "onClick: -----Image--------"+position );
+            Log.e(TAG, "onClick: -----Image--------" + position);
             Intent intent = new Intent(getActivity(), DetailsInFormation.class);
 
-            intent.putExtra("path",url);
+            intent.putExtra("path", url);
             startActivity(intent);
 
         }
+
+
+    }
+
+    @Override
+    public void onRefresh(PullToRefreshBase refreshView) {
+
+        setUpViewFromNet();
+        mHandler.sendEmptyMessageDelayed(100, 1000);
 
 
     }

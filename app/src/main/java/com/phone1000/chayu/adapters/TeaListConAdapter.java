@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.modles.TeaListModel;
 
+import org.greenrobot.eventbus.EventBus;
 import org.xutils.x;
 
 import java.util.ArrayList;
@@ -77,6 +78,7 @@ public class TeaListConAdapter extends BaseAdapter {
         holder.zonghepingfen.setText(item.getScore());
         holder.price.setText("参考价: ¥"+item.getPrice());
         holder.catename.setText(item.getCatename());
+
 
 
         return convertView;

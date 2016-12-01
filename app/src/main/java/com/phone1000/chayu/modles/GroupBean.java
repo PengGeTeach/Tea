@@ -13,6 +13,15 @@ public class GroupBean {
     private String thumb;
     private String title;
     private GroupSourceBean source;
+    private String tid;
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
+    }
 
     public String getContent() {
         return content;

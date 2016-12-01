@@ -1,12 +1,15 @@
 package com.phone1000.chayu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.RadioGroup;
 
+import com.phone1000.chayu.activity.LoginActivity;
 import com.phone1000.chayu.fragments.ChaPingFragment;
 import com.phone1000.chayu.fragments.HomeFragment;
 import com.phone1000.chayu.fragments.QuanZiFragment;
@@ -16,7 +19,8 @@ import com.phone1000.chayu.weidgt.TopBar;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
+public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
     private RadioGroup main_rg;
     private Fragment showfragment;
     private TopBar mTopBar;
@@ -32,10 +36,12 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         main_rg = ((RadioGroup) findViewById(R.id.main_controller));
         main_rg.setOnCheckedChangeListener(this);
         mTopBar = (TopBar) findViewById(R.id.top_bar);
+        mTopBar.setMineListener(this);
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         showfragment = new HomeFragment();
+        mTopBar.topshareVisible(false);
         transaction.add(R.id.main_container,showfragment,HomeFragment.TAG);
         transaction.commit();
     }
@@ -95,5 +101,20 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         }
         transaction.commit();
     }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.top_mine_btn:
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+        }
+
+
+
+    }
+
 
 }

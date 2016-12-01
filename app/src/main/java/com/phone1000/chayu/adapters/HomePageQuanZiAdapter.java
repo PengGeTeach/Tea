@@ -92,7 +92,7 @@ public class HomePageQuanZiAdapter extends RecyclerView.Adapter<HomePageQuanZiAd
     @Override
     public void onClick(View v) {
         GroupBean bean = (GroupBean) v.getTag();
-        String url = UtilPath.TEA_XIANGQING+bean.getResource_id();
+        String url = UtilPath.QUANZI_XIANGQING+bean.getResource_id();
         Intent intent = new Intent(context, DetailsInFormation.class);
         intent.putExtra("path",url);
         context.startActivity(intent);
