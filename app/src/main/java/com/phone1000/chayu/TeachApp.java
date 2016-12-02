@@ -36,6 +36,7 @@ public class TeachApp extends Application{
 
         ShareSDK.initSDK(this);
 
+
         x.Ext.init(this);
         x.Ext.setDebug(true);
         Picasso picasso = new Picasso.Builder(this)

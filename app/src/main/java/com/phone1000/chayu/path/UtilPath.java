@@ -18,5 +18,7 @@ public class UtilPath {
     public static final String PINPAI_LISTVIEW = "http://app.chayu.com/chayu/2.0/tea/lists/index";
     public static final String PINPAI_GRIDVIEW = "http://app.chayu.com/chayu/2.0/tea/lists/get_search_banner";
     public static final String SHIJILISTPATH="http://app.chayu.com/chayu/2.0/shiji/index";
+    public static final String SHIJI_XIANGQIANG_TYP4="http://shiji.chayu.com/collection/";
+    public static final String SHIJI_XIANGQIANG_TYP5="http://shiji.chayu.com/master/";
 
 }

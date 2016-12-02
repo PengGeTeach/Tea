@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 
 import com.phone1000.chayu.Interface.FragmentChangeInterface;
 import com.phone1000.chayu.activity.LoginActivity;
+import com.phone1000.chayu.activity.UserActivity;
 import com.phone1000.chayu.fragments.ChaPingFragment;
 import com.phone1000.chayu.fragments.HomeFragment;
 import com.phone1000.chayu.fragments.QuanZiFragment;
@@ -22,6 +23,10 @@ import com.phone1000.chayu.weidgt.TopBar;
 
 import java.lang.reflect.InvocationTargetException;
 
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.tencent.qq.QQ;
+
 public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener,FragmentChangeInterface {
     private static final String TAG = MainActivity.class.getSimpleName();
     private RadioGroup main_rg;
@@ -30,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     private RadioButton mShijiBtn;
     private RadioButton mQuanziBtn;
     private RadioButton mWenzhangbtn;
+    private Platform platform = ShareSDK.getPlatform(this, QQ.NAME);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +130,21 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
 
         switch (v.getId()) {
             case R.id.top_mine_btn:
+
+                Log.e(TAG, "onClick: "+platform.isValid());
+                if (platform.isValid()) {
+
+                    Intent intent = new Intent(this, UserActivity.class);
+                    startActivity(intent);
+
+
+                }else {
+
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+                }
+
+
                 break;
 
         }

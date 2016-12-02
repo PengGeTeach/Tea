@@ -4,71 +4,49 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.phone1000.chayu.R;
 
+import org.xutils.x;
+
 import java.util.HashMap;
-import java.util.Set;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.tencent.qq.QQ;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, PlatformActionListener,Handler.Callback {
+public class UserActivity extends AppCompatActivity implements PlatformActionListener, View.OnClickListener {
 
-    private static final String TAG = LoginActivity.class.getSimpleName();
     private static final int MSG_AUTH_CANCEL = 0x789;
     private static final int MSG_AUTH_COMPLETE = 0x456;
     private static final int MSG_AUTH_ERROR = 0x123;
     private static final int MSG_SMSSDK_CALLBACK = 0x147;
-    private ImageView mWeiXin;
-    private ImageView mQQ;
-    private ImageView mXinlang;
-    //获取指定的平台
     private Platform platform = ShareSDK.getPlatform(this, QQ.NAME);
     private Handler handler;
     private Platform mPlatform;
+    private TextView mNickname;
+    private ImageView mImage;
+    private TextView mTuchu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_user);
         initView();
-        handler=new Handler(this);
     }
 
     private void initView() {
-        mWeiXin = (ImageView) findViewById(R.id.activity_login_weixin);
-        mQQ = (ImageView) findViewById(R.id.activity_login_qq);
-        mXinlang = (ImageView) findViewById(R.id.activity_login_xinlang);
 
-        mWeiXin.setOnClickListener(this);
-        mQQ.setOnClickListener(this);
-        mXinlang.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.activity_login_weixin:
-                Toast.makeText(LoginActivity.this, "Sorry没有微信登录", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.activity_login_qq:
-
-                authorize(platform);
-                Log.e(TAG, "onClick: "+platform.isValid() );
-
-                break;
-            case R.id.activity_login_xinlang:
-                Toast.makeText(LoginActivity.this, "Sorry没有新浪登录", Toast.LENGTH_SHORT).show();
-                break;
-        }
-
+        mNickname = (TextView) findViewById(R.id.activity_user_nickname);
+        mImage = (ImageView) findViewById(R.id.activity_user_image);
+        mTuchu = (TextView) findViewById(R.id.activity_user_tuichu);
+        authorize(platform);
+        mTuchu.setOnClickListener(this);
     }
 
     //执行授权,获取用户信息
@@ -96,8 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onComplete(Platform platform, int action,
-                           HashMap<String, Object> res) {
+    public void onComplete(Platform platform, int action, HashMap<String, Object> res) {
         // TODO Auto-generated method stub
         if (action == Platform.ACTION_USER_INFOR) {
             Message msg = new Message();
@@ -121,15 +98,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch(msg.what) {
             case MSG_AUTH_CANCEL: {
                 //取消授权
-                Toast.makeText(LoginActivity.this, "取消授权", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserActivity.this, "取消授权", Toast.LENGTH_SHORT).show();
             } break;
             case MSG_AUTH_ERROR: {
                 //授权失败
-                Toast.makeText(LoginActivity.this, "授权失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UserActivity.this, "授权失败", Toast.LENGTH_SHORT).show();
             } break;
             case MSG_AUTH_COMPLETE: {
                 //授权成功
-                Toast.makeText(LoginActivity.this, "授权成功", Toast.LENGTH_LONG).show();
+                Toast.makeText(UserActivity.this, "授权成功", Toast.LENGTH_LONG).show();
 
                 Object[] objs = (Object[]) msg.obj;
                 String platform = (String) objs[0];
@@ -188,6 +165,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //              userInfo.setUserName(platform.getDb().getUserName());
 //              userInfo.setUserNote(platform.getDb().getUserId());
             Toast.makeText(getApplicationContext(), gender+"/"+mPlatform.getDb().getUserName()+"/"+mPlatform.getDb().getUserId(), Toast.LENGTH_SHORT).show();
+
+            String userName = mPlatform.getDb().getUserName();
+            mNickname.setText(userName);
+            String figureurl_qq_1 = mPlatform.getDb().get("figureurl_qq_1");
+            x.image().bind(mImage,figureurl_qq_1);
+
+
         }
 
 //          tvUserName.setText(userInfo.getUserName());
@@ -196,5 +180,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
 
+    @Override
+    public void onClick(View v) {
 
+        if (platform.isAuthValid()) {
+            platform.removeAccount(true);
+        }
+        platform.setPlatformActionListener(this);
+//authorize与showUser单独调用一个即可
+        platform.authorize();//单独授权，OnComplete返回的hashmap是空的
+        platform.showUser(null);//授权并获取用户信息
+//isValid和removeAccount不开启线程，会直接返回。
+
+    }
 }

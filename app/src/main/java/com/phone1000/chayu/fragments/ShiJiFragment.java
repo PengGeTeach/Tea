@@ -1,5 +1,6 @@
 package com.phone1000.chayu.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,15 +23,19 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.adapters.ShijifragmentListAdapter;
 import com.phone1000.chayu.adapters.TeaCommImageAdapter;
+import com.phone1000.chayu.modles.MasterArrBean;
 import com.phone1000.chayu.modles.ShiJiModel;
 import com.phone1000.chayu.path.UtilPath;
 import com.phone1000.chayu.utils.ListViewUtils;
 import com.phone1000.chayu.weidgt.MyListView;
 
+import org.xutils.DbManager;
 import org.xutils.common.Callback;
+import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -39,7 +45,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/11/27 0027.
  */
-public class ShiJiFragment extends Fragment implements PullToRefreshBase.OnRefreshListener, View.OnClickListener, ViewPager.OnPageChangeListener {
+public class ShiJiFragment extends Fragment implements PullToRefreshBase.OnRefreshListener, View.OnClickListener, ViewPager.OnPageChangeListener, AdapterView.OnItemClickListener {
     public static final String TAG = ShiJiFragment.class.getSimpleName();
     private View layout;
     private PullToRefreshScrollView mPullToRefresh;
@@ -60,8 +66,16 @@ public class ShiJiFragment extends Fragment implements PullToRefreshBase.OnRefre
         public void handleMessage(Message msg) {
 
             switch (msg.what) {
-                case 0x110:
+                case 0x120:
                     mPullToRefresh.onRefreshComplete();
+                    break;
+                case 0x100:
+// 得到mVp当前页面的索引
+                    int currentItem = mViwPager.getCurrentItem();
+// 要显示的下一个页面的索引
+                    currentItem++;
+// 设置ViewPager显示的页面
+                    mViwPager.setCurrentItem(currentItem % slide.size());
                     break;
             }
         }
@@ -71,6 +85,9 @@ public class ShiJiFragment extends Fragment implements PullToRefreshBase.OnRefre
     private int proviceindex=0;
     private ShijifragmentListAdapter adapter;
     private ImageView mTopImage;
+
+
+
 
     @Nullable
     @Override
@@ -102,8 +119,10 @@ public class ShiJiFragment extends Fragment implements PullToRefreshBase.OnRefre
         mHeji = (TextView) layout.findViewById(R.id.fragment_shiji_heji);
         mFaxian = (TextView) layout.findViewById(R.id.fragment_shiji_faxian);
         mListView = (ListView) layout.findViewById(R.id.fragment_shiji_listview);
+        mListView.setFocusable(false);
         adapter = new ShijifragmentListAdapter(getContext(),null);
         mListView.setAdapter(adapter);
+        mListView.setOnItemClickListener(this);
 
         mViwPager = (ViewPager) layout.findViewById(R.id.fragment_shiji_viewPager);
         mViewPagerAdapter = new TeaCommImageAdapter(null);
@@ -118,11 +137,13 @@ public class ShiJiFragment extends Fragment implements PullToRefreshBase.OnRefre
 
     }
 
+
+
     @Override
     public void onRefresh(PullToRefreshBase refreshView) {
 
         getDataFromNet();
-        mHandler.sendEmptyMessageDelayed(0x110,1000);
+        mHandler.sendEmptyMessageDelayed(0x120,1000);
 
     }
 
@@ -150,10 +171,10 @@ public class ShiJiFragment extends Fragment implements PullToRefreshBase.OnRefre
                 ShiJiFragment.this.slide=slideArr;
                 setUpViewPager();
 
-                List<ShiJiModel.DataBean.MasterArrBean> masterArr = data.getMasterArr();
+                List<MasterArrBean> masterArr = data.getMasterArr();
 
                 for (int i = 0; i < masterArr.size(); i++) {
-                    ShiJiModel.DataBean.MasterArrBean bean = masterArr.get(i);
+                    MasterArrBean bean = masterArr.get(i);
                     switch (bean.getType()) {
                         case 3:
                             bean.setmDinyiType(0);
@@ -273,6 +294,42 @@ public class ShiJiFragment extends Fragment implements PullToRefreshBase.OnRefre
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        MasterArrBean item = adapter.getItem(position);
+        Log.e(TAG, "onItemClick: position"+position );
+        String url=null;
+        switch (item.getType()) {
+            case 3:
+            case 5:
+                if (item != null) {
+
+                    String sellerUid = item.getSellerUid();
+                    url=UtilPath.SHIJI_XIANGQIANG_TYP5+sellerUid;
+
+
+                }
+
+                break;
+            case 4:
+
+            case 6:
+                if (item != null) {
+                    String data = item.getData();
+                    url=UtilPath.SHIJI_XIANGQIANG_TYP4+data;
+
+                }
+                break;
+        }
+
+        Intent intent = new Intent(getContext(), DetailsInFormation.class);
+        intent.putExtra("path",url);
+        startActivity(intent);
+
 
     }
 }

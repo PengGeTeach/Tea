@@ -417,7 +417,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             intent.putExtra("path", url);
             startActivity(intent);
 
-        }else if (v instanceof TextView){
+        } else if (v instanceof TextView) {
             switch (v.getId()) {
                 case R.id.fragment_homepage_shiji_more:
                     fragmentChangelistener.shijiMoreClick();

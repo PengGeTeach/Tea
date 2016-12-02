@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.phone1000.chayu.R;
+import com.phone1000.chayu.modles.MasterArrBean;
 import com.phone1000.chayu.modles.ShiJiModel;
 
 import org.xutils.image.ImageOptions;
@@ -23,11 +24,11 @@ import java.util.List;
  */
 public class ShijifragmentListAdapter extends BaseAdapter {
 
-    private List<ShiJiModel.DataBean.MasterArrBean> data;
+    private List<MasterArrBean> data;
     private LayoutInflater inflater;
     private ImageOptions options;
 
-    public ShijifragmentListAdapter(Context context, List<ShiJiModel.DataBean.MasterArrBean> data) {
+    public ShijifragmentListAdapter(Context context, List<MasterArrBean> data) {
         options = new ImageOptions.Builder()
                 .setCircular(true)
                 .build();
@@ -39,7 +40,7 @@ public class ShijifragmentListAdapter extends BaseAdapter {
         }
     }
 
-    public void updateRes(List<ShiJiModel.DataBean.MasterArrBean> data) {
+    public void updateRes(List<MasterArrBean> data) {
 
         if (data != null) {
             this.data.clear();
@@ -49,7 +50,7 @@ public class ShijifragmentListAdapter extends BaseAdapter {
 
     }
 
-    public void addRes(List<ShiJiModel.DataBean.MasterArrBean> data) {
+    public void addRes(List<MasterArrBean> data) {
         if (data != null) {
             this.data.addAll(data);
             notifyDataSetChanged();
@@ -72,7 +73,7 @@ public class ShijifragmentListAdapter extends BaseAdapter {
     }
 
     @Override
-    public ShiJiModel.DataBean.MasterArrBean getItem(int position) {
+    public MasterArrBean getItem(int position) {
         return data.get(position);
     }
 
@@ -88,7 +89,7 @@ public class ShijifragmentListAdapter extends BaseAdapter {
         ViewHolder1 viewHolder1;
         ViewHolder2 viewHolder2;
 
-        ShiJiModel.DataBean.MasterArrBean item = getItem(position);
+        MasterArrBean item = getItem(position);
         switch (item.getmDinyiType()) {
             case 0:
                 if (convertView == null) {
@@ -141,13 +142,10 @@ public class ShijifragmentListAdapter extends BaseAdapter {
     private class ViewHolder0 {
         ImageView image;
         TextView content;
-        Button mingjiajieshao, zuopinxiangqing;
 
         public ViewHolder0(View v) {
             image = (ImageView) v.findViewById(R.id.item_shiji_00_image);
             content = (TextView) v.findViewById(R.id.item_shiji_00_content);
-            mingjiajieshao = (Button) v.findViewById(R.id.item_shiji_00_mingjiajieshao);
-            zuopinxiangqing = (Button) v.findViewById(R.id.item_shiji_00_zuopinxinagqing);
         }
     }
 
