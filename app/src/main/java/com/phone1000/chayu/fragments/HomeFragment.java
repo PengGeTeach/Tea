@@ -45,7 +45,9 @@ import com.phone1000.chayu.event.TeaListEvent;
 import com.phone1000.chayu.path.UtilPath;
 
 import org.greenrobot.eventbus.EventBus;
+import org.xutils.DbManager;
 import org.xutils.common.Callback;
+import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -68,6 +70,12 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     private int proviceindex = 0;
     private HorizontalScrollView mHScroll;
     private LinearLayout mHscrollCon;
+
+    DbManager.DaoConfig daoConfig=new DbManager.DaoConfig()
+            .setDbName("yang.db")
+            .setAllowTransaction(true)
+            .setDbVersion(1)
+            ;
 
     // 屏幕宽度(以像素做为单位)
     private int screenWidth;
@@ -178,13 +186,139 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         mQZRecycler.setFocusable(false);
         mWZRecycler.setFocusable(false);
 
-        setUpViewFromNet();
+
         mShijiMore = (TextView) layout.findViewById(R.id.fragment_homepage_shiji_more);
         mQuanziMore = (TextView) layout.findViewById(R.id.fragment_homepage_quanzi_more);
         mWenZhangMore = (TextView) layout.findViewById(R.id.fragment_homepage_wenzhang_more);
         mShijiMore.setOnClickListener(this);
         mQuanziMore.setOnClickListener(this);
         mWenZhangMore.setOnClickListener(this);
+
+        setUpViewFromNet();
+//        getDataFromDataBase();
+
+    }
+
+    //--------------------从数据库中获取-----------------
+    public void getDataFromDataBase() {
+
+        DbManager db = x.getDb(daoConfig);
+        /**
+         * 从数据库中查找数据
+         *
+         * 查找sql
+         *
+         */
+
+//-------------------ViewPager-------------
+        try {
+            List<SlideBean> slide=db.selector(SlideBean.class).limit(20)
+                    .findAll();
+
+            if (slide == null|| slide.size()==0) {
+                setUpViewFromNet();
+                Log.e(TAG, "getDataFromDataBase: 从网络加载" );
+
+            }else {
+                Log.e(TAG, "getDataFromDataBase: 数据库中加载 " );
+                HomeFragment.this.slide.addAll(slide);
+
+                setUpViewPager();
+
+            }
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+
+       //--------------ScrollView
+        try {
+            List<TeaCateBean> teaCate=db.selector(TeaCateBean.class).limit(20)
+                    .findAll();
+
+            if (teaCate == null|| teaCate.size()==0) {
+                setUpViewFromNet();
+                Log.e(TAG, "getDataFromDataBase: 从网络加载" );
+
+            }else {
+                Log.e(TAG, "getDataFromDataBase: 数据库中加载 " );
+
+                setUpChaping(teaCate);
+
+            }
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        //--------------------------1--------------
+        /*
+                List<ShiJIBean> shiji = data.getShiji();
+                mShijiadapter.updataRes(shiji);
+         */
+        try {
+            List<ShiJIBean> shiji=db.selector(ShiJIBean.class).limit(20)
+                    .findAll();
+
+            if (shiji == null|| shiji.size()==0) {
+                setUpViewFromNet();
+                Log.e(TAG, "getDataFromDataBase: 从网络加载" );
+
+            }else {
+                Log.e(TAG, "getDataFromDataBase: 数据库中加载 " );
+
+                mShijiadapter.updataRes(shiji);
+            }
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+        /*
+        ----------------------2---------------
+         List<GroupBean> group = data.getGroup();
+                mQZAdapter.updataRes(group);
+         */
+
+        try {
+            List<GroupBean> group=db.selector(GroupBean.class).limit(20)
+                    .findAll();
+
+            if (group == null|| group.size()==0) {
+                setUpViewFromNet();
+                Log.e(TAG, "getDataFromDataBase: 从网络加载" );
+
+            }else {
+                Log.e(TAG, "getDataFromDataBase: 数据库中加载 " );
+                mQZAdapter.updataRes(group);
+            }
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+
+        /*
+        ----------------------3---------------------
+        List<ArticleBean> article = data.getArticle();
+        mWZAdapter.updataRes(article);
+         */
+
+        try {
+            List<ArticleBean> article=db.selector(ArticleBean.class).limit(20)
+                    .findAll();
+
+            if (article == null|| article.size()==0) {
+                setUpViewFromNet();
+                Log.e(TAG, "getDataFromDataBase: 从网络加载" );
+
+            }else {
+                Log.e(TAG, "getDataFromDataBase: 数据库中加载 " );
+                mWZAdapter.updataRes(article);
+            }
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 
@@ -213,17 +347,113 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                 HomeFragment.this.slide.addAll(slide);
                 setUpViewPager();
 
+//                //---------------数据库缓存-------------
+//                DbManager db = x.getDb(daoConfig);
+//                try {
+//                    db.delete(SlideBean.class);
+//                } catch (DbException e) {
+//                    Log.e(TAG, "onSuccess: 删除失败" );
+//                    e.printStackTrace();
+//                }
+//                for (SlideBean model: slide  ) {
+//
+//                    try {
+//                        db.saveOrUpdate(model);
+//                    } catch (DbException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+
+
                 List<TeaCateBean> teaCate = data.getTeaCate();
                 setUpChaping(teaCate);
+//
+//                //---------------数据库缓存-------------
+//
+//                try {
+//                    db.delete(TeaCateBean.class);
+//                } catch (DbException e) {
+//                    Log.e(TAG, "onSuccess: 删除失败" );
+//                    e.printStackTrace();
+//                }
+//                for (TeaCateBean model: teaCate  ) {
+//
+//                    try {
+//                        db.saveOrUpdate(model);
+//                    } catch (DbException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+
 
                 List<ShiJIBean> shiji = data.getShiji();
                 mShijiadapter.updataRes(shiji);
 
+//                //---------------数据库缓存-------------
+//
+//                try {
+//                    db.delete(ShiJIBean.class);
+//                } catch (DbException e) {
+//                    Log.e(TAG, "onSuccess: 删除失败" );
+//                    e.printStackTrace();
+//                }
+//                for (ShiJIBean model: shiji  ) {
+//
+//                    try {
+//                        db.saveOrUpdate(model);
+//                    } catch (DbException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+
                 List<GroupBean> group = data.getGroup();
                 mQZAdapter.updataRes(group);
 
+//                //---------------数据库缓存-------------
+//
+//                try {
+//                    db.delete(GroupBean.class);
+//                } catch (DbException e) {
+//                    Log.e(TAG, "onSuccess: 删除失败" );
+//                    e.printStackTrace();
+//                }
+//                for (GroupBean model: group  ) {
+//
+//                    try {
+//                        db.saveOrUpdate(model);
+//                    } catch (DbException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+
+
+
                 List<ArticleBean> article = data.getArticle();
                 mWZAdapter.updataRes(article);
+
+//
+//                //---------------数据库缓存-------------
+//
+//                try {
+//                    db.delete(ArticleBean.class);
+//                } catch (DbException e) {
+//                    Log.e(TAG, "onSuccess: 删除失败" );
+//                    e.printStackTrace();
+//                }
+//                for (ArticleBean model: article  ) {
+//
+//                    try {
+//                        db.saveOrUpdate(model);
+//                    } catch (DbException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+
                 mPulltoRefresh.onRefreshComplete();
 
             }
@@ -380,15 +610,12 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     public void onPageSelected(int position) {
 
 
-        Log.e(TAG, "onPageSelected: --------------------" + position);
-
 
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
 
-        Log.e(TAG, "onPageScrollStateChanged: ----------------" + state);
 
     }
 
