@@ -1,10 +1,7 @@
 package com.phone1000.chayu;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,7 +13,6 @@ import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.phone1000.chayu.adapters.PinPaiGridViewAdapter3;
 import com.phone1000.chayu.event.PinPaiGridViewEvent;
 import com.phone1000.chayu.fragments.PinJianNiandu;
 import com.phone1000.chayu.fragments.PinPaiGridView;
@@ -165,9 +161,10 @@ public class PinPaiActivity extends AppCompatActivity implements CompoundButton.
     private void switchkucunpage(boolean b) {
 
         if(b){
-
             mCxpingfen.setChecked(false);
-            PinPaiGridViewEvent pinPaiGridViewEvent = new PinPaiGridViewEvent(192);
+            mCxniandu.setChecked(false);
+            mCxname.setChecked(false);
+            PinPaiGridViewEvent pinPaiGridViewEvent = new PinPaiGridViewEvent(195);
             String order = "remain";
             pinPaiGridViewEvent.setOrder(order);
             EventBus.getDefault().postSticky(pinPaiGridViewEvent);
@@ -200,6 +197,7 @@ public class PinPaiActivity extends AppCompatActivity implements CompoundButton.
             transaction.add(R.id.pinpai_fragment,pinJianNiandu);
             transaction.commit();
         }else{
+
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             //transaction.hide(showFragment);
@@ -241,7 +239,7 @@ public class PinPaiActivity extends AppCompatActivity implements CompoundButton.
         }else{
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
-            //transaction.hide(showFragment);
+            transaction.hide(showFragment);
             Fragment fragmentByTag = manager.findFragmentByTag(PinPaiListViewFragment.TAG);
             if (fragmentByTag != null) {
                 transaction.replace(R.id.pinpai_fragment,fragmentByTag);
@@ -274,25 +272,26 @@ public class PinPaiActivity extends AppCompatActivity implements CompoundButton.
             mCxpingfen.setChecked(false);
             mCxkuncun.setChecked(false);
             mCxniandu.setChecked(false);
-        }else if(b==false&&b1){
+        }else if(b==false){
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.hide(showFragment);
-            Fragment fragmentByTag = manager.findFragmentByTag(PinPaiListViewFragment.TAG);
-            if (fragmentByTag != null) {
-                transaction.replace(R.id.pinpai_fragment,fragmentByTag);
-                showFragment = fragmentByTag;
+            if(b1){
+                Fragment fragmentByTag = manager.findFragmentByTag(PinPaiListViewFragment.TAG);
+                if (fragmentByTag != null) {
+                    transaction.replace(R.id.pinpai_fragment,fragmentByTag);
+                    showFragment = fragmentByTag;
 
-            }else {
-                fragmentByTag = new PinPaiListViewFragment();
-                transaction.replace(R.id.pinpai_fragment,fragmentByTag);
-                transaction.add(R.id.pinpai_fragment,fragmentByTag,PinPaiListViewFragment.TAG);
-                showFragment = fragmentByTag;
+                }else {
+                    fragmentByTag = new PinPaiListViewFragment();
+                    transaction.replace(R.id.pinpai_fragment,fragmentByTag);
+                    transaction.add(R.id.pinpai_fragment,fragmentByTag,PinPaiListViewFragment.TAG);
+                    showFragment = fragmentByTag;
+                }
+                transaction.show(showFragment);
+                transaction.commit();
             }
-            transaction.show(showFragment);
-            transaction.commit();
         }
-
     }
 
     @Override
@@ -323,7 +322,7 @@ public class PinPaiActivity extends AppCompatActivity implements CompoundButton.
 
                 FragmentManager manager = getSupportFragmentManager();
                 FragmentTransaction transaction = manager.beginTransaction();
-                //transaction.hide(showFragment);
+                transaction.hide(showFragment);
                 Fragment fragmentByTag = manager.findFragmentByTag(PinPaiListViewFragment.TAG);
                 if (fragmentByTag != null) {
                     transaction.replace(R.id.pinpai_fragment,fragmentByTag);

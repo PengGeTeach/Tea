@@ -303,6 +303,15 @@ public class TeaComm implements Parcelable{
             public static class Children{
 
                 private String name;
+                private String sid;
+
+                public String getSid() {
+                    return sid;
+                }
+
+                public void setSid(String sid) {
+                    this.sid = sid;
+                }
 
                 public String getName() {
                     return name;

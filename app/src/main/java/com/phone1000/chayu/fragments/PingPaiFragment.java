@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
 import com.phone1000.chayu.R;
+import com.phone1000.chayu.activity.TeaListActivity;
 import com.phone1000.chayu.adapters.PinPaiFragmentAdapter;
 import com.phone1000.chayu.event.Chapinevent;
 import com.phone1000.chayu.modles.TeaComm;
@@ -26,7 +28,7 @@ import org.greenrobot.eventbus.Subscribe;
  */
 public class PingPaiFragment extends Fragment implements AdapterView.OnItemClickListener {
 
-    private static final String TAG = PingPaiFragment.class.getSimpleName();
+    public static final String TAG = PingPaiFragment.class.getSimpleName();
     private View layout;
     private ExpandableListView mExListView;
     private TeaComm data;
@@ -50,7 +52,7 @@ public class PingPaiFragment extends Fragment implements AdapterView.OnItemClick
     private void initView() {
 
         mExListView = ((ExpandableListView) layout.findViewById(R.id.expanded_lv));
-
+        mExListView.setFocusable(false);
         mExListView.setOnItemClickListener(this);
 
     }
@@ -80,13 +82,15 @@ public class PingPaiFragment extends Fragment implements AdapterView.OnItemClick
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Log.e(TAG, "onItemClick: "+"我点击了这" +i);
         if("全部".equals(data.getData().getCategory_list().get(i).getName())) {
-            TeaListEvent event = new TeaListEvent(0x100);
+            Log.e(TAG, "onItemClick: "+"我点击了这里" );
+            TeaListEvent event = new TeaListEvent(0x110);
+            //event.setSid(data.get(tag).getName());
             event.setBid(data.getData().getCategory_list().get(i).getBid()+"");
-            event.setSid(null);
             EventBus.getDefault().postSticky(event);
-            //Intent intent = new Intent(getContext(), TeaListActivity.class);
-            //startActivity(intent);
+            Intent intent = new Intent(getActivity(), TeaListActivity.class);
+            startActivity(intent);
         }
     }
 }

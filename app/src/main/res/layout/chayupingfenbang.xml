@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.phone1000.chayu.weidgt.TopBar
+        android:layout_width="match_parent"
+        android:layout_height="60dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        >
+
+        <CheckBox
+            android:id="@+id/pingfenbang"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="50dp"
+            android:text="评分榜"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="@drawable/chexkbox_color"
+            android:drawableRight="@drawable/checkbox_drawable"
+            android:layout_marginRight="20dp"
+            android:button="@null"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#000000"
+            />
+
+        <CheckBox
+            android:id="@+id/chalei"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="2"
+            android:text="茶类"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="@drawable/chexkbox_color"
+            android:drawableRight="@drawable/checkbox_drawable"
+            android:layout_marginRight="20dp"
+            android:button="@null"
+            />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="#000000"
+            />
+
+        <CheckBox
+            android:id="@+id/nianfen"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="2"
+            android:text="年份"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="@drawable/chexkbox_color"
+            android:drawableRight="@drawable/checkbox_drawable"
+            android:layout_marginRight="20dp"
+            android:button="@null"
+            />
+    </LinearLayout>
+
+
+    <FrameLayout
+        android:id="@+id/bangdan_framlayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+</LinearLayout>

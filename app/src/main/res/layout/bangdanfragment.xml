@@ -12,6 +12,7 @@
         >
 
         <LinearLayout
+            android:id="@+id/linear_1"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
@@ -38,6 +39,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/linear_2"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
@@ -64,6 +66,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/linear_3"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
@@ -90,6 +93,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/linear_4"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_weight="1"
@@ -127,9 +131,9 @@
         android:background="#696464"
         />
 
-    <ListView
+    <com.phone1000.chayu.utils.NoScrollListView
         android:id="@+id/bangdan_lv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

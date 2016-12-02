@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:id="@+id/rg_group"
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+
+        <RadioButton
+            android:id="@+id/chayu"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:button="@null"
+            android:layout_marginLeft="10dp"
+            android:text="某某排行榜"
+            android:layout_marginTop="20dp"
+            android:textColor="@drawable/rg_color"
+            android:gravity="center"
+            android:background="@drawable/rg_selectbackground"
+            />
+
+        <RadioButton
+            android:id="@+id/zonghe"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:button="@null"
+            android:layout_marginLeft="10dp"
+            android:text="某某排行榜"
+            android:layout_marginTop="20dp"
+            android:textColor="@drawable/rg_color"
+            android:gravity="center"
+            android:background="@drawable/rg_selectbackground"
+            />
+
+    </RadioGroup>
+
+</LinearLayout>

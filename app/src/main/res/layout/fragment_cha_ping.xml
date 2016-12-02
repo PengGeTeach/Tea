@@ -67,19 +67,60 @@
         </RelativeLayout>
 
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tea_conment_tab"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            app:tabIndicatorColor="@null"
+       <RadioGroup
+           android:id="@id/rg_group"
+           android:layout_width="match_parent"
+           android:layout_height="80dp"
+           android:orientation="horizontal"
+           android:gravity="center_vertical"
+           >
 
-            />
+           <RadioButton
+               android:id="@+id/rb_1"
+               android:layout_width="0dp"
+               android:layout_height="60dp"
+               android:layout_weight="1"
+               android:textSize="15sp"
+               android:textColor="@drawable/tab_selectcolor"
+               android:text="按茶类"
+               android:button="@null"
+                android:drawableTop="@drawable/tab_chalei"
+               android:gravity="center"
+               android:checked="true"
+               />
 
-        <com.phone1000.chayu.weidgt.CustomViewPager
-            android:id="@+id/tea_conment_viewpager"
+           <RadioButton
+               android:id="@+id/rb_2"
+               android:layout_width="0dp"
+               android:layout_height="60dp"
+               android:layout_weight="1"
+               android:textSize="15sp"
+               android:textColor="@drawable/tab_selectcolor"
+               android:text="按品牌"
+               android:button="@null"
+               android:gravity="center"
+               android:drawableTop="@drawable/tab_pinpai"
+               />
+           <RadioButton
+               android:id="@+id/rb_3"
+               android:layout_width="0dp"
+               android:layout_height="60dp"
+               android:layout_weight="1"
+               android:textSize="15sp"
+               android:textColor="@drawable/tab_selectcolor"
+               android:text="按榜单"
+               android:gravity="center"
+               android:button="@null"
+               android:drawableTop="@drawable/tab_bangdan"
+               />
+
+        </RadioGroup>
+
+
+        <FrameLayout
+            android:id="@+id/frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
+            android:layout_height="match_parent"/>
 
 
     </LinearLayout>

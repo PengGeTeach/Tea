@@ -51,6 +51,7 @@ public class PinPaiGridViewAdapter4 extends TeachMultiTypeAdapter<PinPaiGridView
             PinPaiGridViewEvent pinPaiGridViewEvent = new PinPaiGridViewEvent(197);
             pinPaiGridViewEvent.setId(data.get(tag).getId());
             EventBus.getDefault().postSticky(pinPaiGridViewEvent);
+            data.remove(0);
         }
     }
 

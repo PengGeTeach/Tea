@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -14,9 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
@@ -33,11 +38,12 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener {
+public class ChaPingFragment extends Fragment implements View.OnClickListener,PullToRefreshBase.OnRefreshListener2, ViewPager.OnPageChangeListener, RadioGroup.OnCheckedChangeListener {
 
     private PullToRefreshScrollView scrollView;
     private PullToRefreshScrollView mPulScrallView;
@@ -45,16 +51,16 @@ public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeL
     private TextView mlldiquText;
     private TextView mllTexView;
     private LinearLayout mLl;
-    private TabLayout mTabLayout;
-    private CustomViewPager mViewPager;
     private TeaCommImageAdapter teaCommImageAdapter;
     private TeaComm teaComm;
     private int proviceindex = 0;
-    private TeaCommFragmentAdapter adapter;
 
     public static final String TAG = ChaPingFragment.class.getSimpleName();
     private static final String GET_URL = "http://app.vmoiver.com/apiv3/post/getPostInCate?cateid=0&p=1";
     private View layout;
+    private Fragment showFragment;
+    private RadioGroup mRadioGroup;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,6 +91,8 @@ public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeL
             @Override
             public void onSuccess(String result) {
                 Log.e(TAG, "onSuccess: " +result);
+
+                mPulScrallView.onRefreshComplete();
 
                 Gson gson = new Gson();
                 teaComm = gson.fromJson(result, TeaComm.class);
@@ -151,52 +159,35 @@ public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeL
     private void initView() {
 
         mPulScrallView = (PullToRefreshScrollView)layout.findViewById(R.id.tea_conment_scrollView);
+        mPulScrallView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         mViewPagerTitle = (ViewPager)layout.findViewById(R.id.tea_conment_title_viewpage);
         mlldiquText = (TextView) layout.findViewById(R.id.tea_conment_fenlei);
         mllTexView = (TextView) layout.findViewById(R.id.tea_conment_text);
         mLl = (LinearLayout) layout.findViewById(R.id.ll_dot);
-        mTabLayout = (TabLayout) layout.findViewById(R.id.tea_conment_tab);
-        mViewPager = (CustomViewPager) layout.findViewById(R.id.tea_conment_viewpager);
+        mRadioGroup = ((RadioGroup) layout.findViewById(R.id.rg_group));
+
+        mRadioGroup.setOnCheckedChangeListener(this);
+
 
         teaCommImageAdapter = new TeaCommImageAdapter(null);
         mViewPagerTitle.setAdapter(teaCommImageAdapter);
 
         mViewPagerTitle.setOnPageChangeListener(this);
 
-        TabLayout.Tab tab = mTabLayout.newTab();
-        tab.setCustomView(R.layout.tab_chalei);
-        TabLayout.Tab tab1= mTabLayout.newTab();
-        tab1.setCustomView(R.layout.tab_pinpai);
-        TabLayout.Tab tab2 = mTabLayout.newTab();
-        tab2.setCustomView(R.layout.tab_bangdan);
-        mTabLayout.addTab(tab);
-        mTabLayout.addTab(tab1);
-        mTabLayout.addTab(tab2);
 
-        mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
-        mViewPager.setOffscreenPageLimit(2);
-        adapter = new TeaCommFragmentAdapter(getChildFragmentManager(),getData());
+        mPulScrallView.setOnRefreshListener(this);
 
 
-        mViewPager.setAdapter(adapter);
-    }
-
-
-    private List<Fragment> getData() {
-
-        List<Fragment> data = new ArrayList<>();
-
-        PingPaiFragment pingPaiFragment = new PingPaiFragment();
-        ChaLeiFragment chaPingFragment = new ChaLeiFragment();
-        BangDanFragment bangDanFragment = new BangDanFragment();
-        data.add(pingPaiFragment);
-        data.add(chaPingFragment);
-        data.add(bangDanFragment);
-
-        return data;
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        showFragment = new PingPaiFragment();
+        transaction.add(R.id.frame,showFragment,PingPaiFragment.TAG);
+        transaction.commit();
 
     }
+
+
+
 
 
     @Override
@@ -212,7 +203,6 @@ public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeL
     @Override
     public void onPageSelected(int position) {
 
-        //mViewPager.reseHeigth(position);
     }
 
         @Override
@@ -232,5 +222,64 @@ public class ChaPingFragment extends Fragment implements ViewPager.OnPageChangeL
             intent.putExtra("path",tag);
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+
+        setupView();
+
+    }
+
+    @Override
+    public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+        switch (i){
+
+            case R.id.rb_1:
+                switchpage(PingPaiFragment.TAG,PingPaiFragment.class);
+                break;
+            case R.id.rb_2:
+                switchpage(ChaLeiFragment.TAG,ChaLeiFragment.class);
+                break;
+            case R.id.rb_3:
+                switchpage(BangDanFragment.TAG,BangDanFragment.class);
+                break;
+
+        }
+
+    }
+
+    private void switchpage(String tag, Class<? extends  Fragment> cls) {
+
+        FragmentManager manager = getActivity().getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.hide(showFragment);
+        showFragment = (Fragment) manager.findFragmentByTag(tag);
+        if (showFragment!=null){
+            transaction.show(showFragment);
+        }else{
+
+            try {
+                showFragment = cls.getConstructor().newInstance();
+                transaction.add(R.id.frame,showFragment,tag);
+            } catch (java.lang.InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+
+        }
+        transaction.commit();
+
     }
 }

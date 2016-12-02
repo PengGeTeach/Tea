@@ -1,5 +1,6 @@
 package com.phone1000.chayu.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,17 +8,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.phone1000.chayu.ChayuPingFenBang;
+import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.adapters.BangDanAdapter;
 import com.phone1000.chayu.modles.BangDanModle;
 import com.phone1000.chayu.path.UtilPath;
 import com.phone1000.chayu.utils.ListViewUtils;
+import com.phone1000.chayu.utils.NoScrollListView;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -26,12 +31,13 @@ import org.xutils.x;
 /**
  * Created by Administrator on 2016/11/29 0029.
  */
-public class BangDanFragment extends Fragment{
+public class BangDanFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private static final String TAG = BangDanFragment.class.getSimpleName();
+    public static final String TAG = BangDanFragment.class.getSimpleName();
     private View layout;
     private LinearLayout mLinearLayout;
-    private ListView m_listView;
+    private NoScrollListView m_listView;
+    private BangDanAdapter bangDanAdapter;
 
     @Nullable
     @Override
@@ -95,17 +101,15 @@ public class BangDanFragment extends Fragment{
 
     private void setupWithBnagdanListview(BangDanModle bangDanModle) {
 
-        BangDanAdapter bangDanAdapter = new BangDanAdapter(getActivity(), bangDanModle.getData().getTopList(),R.layout.bandgan_listview_item);
-        m_listView.setAdapter(bangDanAdapter);
+        bangDanAdapter.updateRes(bangDanModle.getData().getTopList());
 
-        ListViewUtils.setListViewHeightBasedOnChildren(m_listView);
+//        ListViewUtils.setListViewHeightBasedOnChildren(m_listView);
     }
 
     private void setupWithBnagdan(BangDanModle bangDanModle) {
 
         for (int i = 0; i < bangDanModle.getData().getTopArr().size(); i++) {
             LinearLayout childLinear = (LinearLayout) mLinearLayout.getChildAt(i);
-            Log.e(TAG, "setupWithBnagdan: 获取子类控件个数"+childLinear.getChildCount() );
             ImageView imageView = (ImageView) childLinear.getChildAt(0);
             x.image().bind(imageView,bangDanModle.getData().getTopArr().get(i).getThumb());
             TextView textView = (TextView) childLinear.getChildAt(1);
@@ -113,12 +117,60 @@ public class BangDanFragment extends Fragment{
             TextView textView1 = (TextView) childLinear.getChildAt(2);
             textView1.setText(bangDanModle.getData().getTopArr().get(i).getTitles());
         }
-        
+
+        LinearLayout layout1 = (LinearLayout) mLinearLayout.findViewById(R.id.linear_1);
+        LinearLayout layout2 = (LinearLayout) mLinearLayout.findViewById(R.id.linear_2);
+        LinearLayout layout3 = (LinearLayout) mLinearLayout.findViewById(R.id.linear_3);
+        LinearLayout layout4 = (LinearLayout) mLinearLayout.findViewById(R.id.linear_3);
+        layout1.setOnClickListener(this);
+        layout2.setOnClickListener(this);
+        layout3.setOnClickListener(this);
+        layout4.setOnClickListener(this);
+
     }
 
     private void initView() {
         mLinearLayout = ((LinearLayout) layout.findViewById(R.id.bangdan_ll));
+        m_listView = ((NoScrollListView) layout.findViewById(R.id.bangdan_lv));
+        bangDanAdapter = new BangDanAdapter(getActivity(), null, R.layout.bandgan_listview_item);
+        m_listView.setAdapter(bangDanAdapter);
+        m_listView.setFocusable(false);
 
-        m_listView = ((ListView) layout.findViewById(R.id.bangdan_lv));
+        m_listView.setOnItemClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.linear_1:
+                Intent intent = new Intent(getActivity(), ChayuPingFenBang.class);
+                intent.putExtra("bang","1");
+                startActivity(intent);
+                break;
+            case R.id.linear_2:
+                Intent intent1 = new Intent(getActivity(), ChayuPingFenBang.class);
+                intent1.putExtra("bang","2");
+                startActivity(intent1);
+                break;
+            case R.id.linear_3:
+                Intent intent2 = new Intent(getActivity(), DetailsInFormation.class);
+                intent2.putExtra("path","http://m.chayu.com/special/top2015?source=app");
+                startActivity(intent2);
+                break;
+            case R.id.linear_4:
+                Intent intent3 = new Intent(getActivity(),DetailsInFormation.class);
+                intent3.putExtra("path","http://m.chayu.com/special/top2014?source=app");
+                startActivity(intent3);
+                break;
+        }
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        Log.e(TAG, "onItemClick: 点击的条目"+i );
+
     }
 }

@@ -32,7 +32,7 @@ import org.xutils.x;
  */
 public class ChaLeiFragment extends Fragment implements PinPaiGridViewAdapter.Pingpaiitem ,PinPaiGridViewAdapter2.SendPinpaiPositiob, AdapterView.OnItemClickListener {
 
-    private static final String TAG = ChaLeiFragment.class.getSimpleName();
+    public static final String TAG = ChaLeiFragment.class.getSimpleName();
     private View layout;
     private MyGridView mGridViewRemen;
     private MyGridView mGridviewpinpai;

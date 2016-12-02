@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="80dp"
+        android:layout_height="80sp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignTop="@+id/image"
+        android:layout_toRightOf="@+id/image"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        >
+
+        <ImageView
+            android:id="@+id/toutiao"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:src="@mipmap/tou_tiao"
+            />
+        <TextView
+            android:id="@+id/text_item1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="   asdaskajsdhkashasdasdasd"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:lines="2"
+            />
+    </FrameLayout>
+
+    <ImageView
+        android:id="@+id/zan_image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@mipmap/zan_icon"
+        android:layout_toRightOf="@+id/image"
+        android:layout_marginLeft="10dp"
+        android:layout_alignBottom="@+id/image"
+        />
+
+    <TextView
+        android:id="@+id/zan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/zan_image"
+        android:layout_alignBottom="@+id/zan_image"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000000"
+        />
+
+    <ImageView
+        android:id="@+id/liulan_image"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@mipmap/liulan_icon"
+        android:layout_toRightOf="@+id/zan"
+        android:layout_marginLeft="60dp"
+        android:layout_alignBottom="@+id/zan"
+
+        />
+
+    <TextView
+        android:id="@+id/liulan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/liulan_image"
+        android:layout_alignBottom="@+id/liulan_image"
+        android:layout_marginLeft="10dp"
+        android:textColor="#000000"
+        />
+
+</RelativeLayout>

@@ -37,5 +37,8 @@ public class PinPaiListViewFragmentAdapter extends TeachBaseAdapter<PinPaiListVi
         textViewfenlei.setText(item.getCatename());
         TextView textViewprice = (TextView) holder.getView(R.id.item_tealistconlist_price);
         textViewprice.setText(item.getPrice());
+
+
     }
+
 }
