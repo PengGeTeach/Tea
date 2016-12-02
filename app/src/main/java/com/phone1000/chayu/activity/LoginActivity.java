@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Platform platform = ShareSDK.getPlatform(this, QQ.NAME);
     private Handler handler;
     private Platform mPlatform;
+    private ImageView mBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mWeiXin.setOnClickListener(this);
         mQQ.setOnClickListener(this);
         mXinlang.setOnClickListener(this);
+        mBack = (ImageView) findViewById(R.id.activity_login_back);
+        mBack.setOnClickListener(this);
     }
 
     @Override
@@ -66,6 +69,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.activity_login_xinlang:
                 Toast.makeText(LoginActivity.this, "Sorry没有新浪登录", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.activity_login_back:
+                finish();
                 break;
         }
 

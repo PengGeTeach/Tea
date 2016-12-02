@@ -132,17 +132,17 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
             case R.id.top_mine_btn:
 
                 Log.e(TAG, "onClick: "+platform.isValid());
-                if (platform.isValid()) {
-
-                    Intent intent = new Intent(this, UserActivity.class);
-                    startActivity(intent);
-
-
-                }else {
+//                if (platform.isValid()) {
+//
+//                    Intent intent = new Intent(this, UserActivity.class);
+//                    startActivity(intent);
+//
+//
+//                }else {
 
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
-                }
+//                }
 
 
                 break;
