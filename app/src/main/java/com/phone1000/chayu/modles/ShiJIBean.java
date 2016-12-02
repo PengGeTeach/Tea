@@ -1,16 +1,28 @@
 package com.phone1000.chayu.modles;
 
+import org.xutils.db.annotation.Column;
+import org.xutils.db.annotation.Table;
+
 /**
  * Created by Administrator on 2016/11/30 0030.
  */
+@Table(name = "ShiJIBean")
 public class ShiJIBean {
+    @Column(name = "resource_id")
     private String resource_id;
+    @Column(name = "resource_type")
     private String resource_type;
+    @Column(name = "tags")
     private String tags;
+    @Column(name = "template_id",isId = true,autoGen = false)
     private String template_id;
+    @Column(name = "thumb")
     private String thumb;
+    @Column(name = "title")
     private String title;
+    @Column(name = "url")
     private String url;
+    @Column(name = "source")
     private ShijiSourceBean source;
 
     public String getResource_id() {

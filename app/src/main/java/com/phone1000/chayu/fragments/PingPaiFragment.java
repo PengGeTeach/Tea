@@ -1,6 +1,5 @@
 package com.phone1000.chayu.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,7 +16,7 @@ import com.phone1000.chayu.activity.TeaListActivity;
 import com.phone1000.chayu.adapters.PinPaiFragmentAdapter;
 import com.phone1000.chayu.event.Chapinevent;
 import com.phone1000.chayu.modles.TeaComm;
-import com.phone1000.chayu.modles.TeaListEvent;
+import com.phone1000.chayu.event.TeaListEvent;
 import com.phone1000.chayu.utils.ListViewUtils;
 
 import org.greenrobot.eventbus.EventBus;

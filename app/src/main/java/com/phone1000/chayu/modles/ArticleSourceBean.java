@@ -1,8 +1,11 @@
 package com.phone1000.chayu.modles;
 
+import org.xutils.db.annotation.Table;
+
 /**
  * Created by Administrator on 2016/11/30 0030.
  */
+
 public class ArticleSourceBean {
 
     private String clicks;

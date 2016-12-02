@@ -8,17 +8,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.FrameLayout;
-import android.widget.RadioGroup;
 
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.fragments.PingFenCheckedListFragment;
 import com.phone1000.chayu.fragments.PingJianCheckedListFragment;
 import com.phone1000.chayu.fragments.TeaListCheckedListFragment;
 import com.phone1000.chayu.fragments.TeaListConListFragment;
-import com.phone1000.chayu.modles.TeaChldeClickListenter;
-import com.phone1000.chayu.modles.TeaListEvent;
+import com.phone1000.chayu.Interface.TeaChldeClickListenter;
+import com.phone1000.chayu.event.TeaListEvent;
 import com.phone1000.chayu.weidgt.TopBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -85,6 +83,12 @@ public class TeaListActivity extends AppCompatActivity implements TeaChldeClickL
     public void onEvent(TeaListEvent event) {
 //        Log.e(TAG, "onEvent: "+event.getTag() );
         if (event.getWHAT() == 0x110) {
+
+            if (event.getTeaName()!=null) {
+                String teaName = event.getTeaName();
+                mTeaType.setText(teaName);
+            }
+
             if (event.getSid() != null) {
                 sid = event.getSid();
             }

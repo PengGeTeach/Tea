@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/fragment_quanzi_topimage"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/fragment_quanzi_btn_quanzi"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:drawableTop="@mipmap/quanzi"
+            android:text="@string/quan_zi"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/fragment_quanzi_btn_huati"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/huati"
+            android:gravity="center"
+            android:drawableTop="@mipmap/huati_h"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/fragment_quanzi_btn_qiandao"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/qiandao"
+            android:gravity="center"
+            android:drawableTop="@mipmap/qiandao_icon"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+
+            android:id="@+id/fragment_quanzi_xuechaquan"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+            <ImageView
+                android:id="@+id/fragment_quanzi_xuechaquan_image"
+                android:layout_width="match_parent"
+                android:src="@mipmap/ic_launcher"
+                android:layout_height="100dp" />
+            <TextView
+                android:id="@+id/fragment_quanzi_xuechaquan_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="学茶圈"/>
+            <TextView
+                android:id="@+id/fragment_quanzi_xuechaquan_guanzhu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="关注:2157"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_gray"/>
+            <TextView
+                android:id="@+id/fragment_quanzi_xuechaquan_huati"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="话题:6826"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_gray"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/fragment_quanzi_chayupingcha"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+            <ImageView
+                android:id="@+id/fragment_quanzi_chayupingcha_image"
+                android:layout_width="match_parent"
+                android:src="@mipmap/ic_launcher"
+                android:layout_height="100dp" />
+            <TextView
+                android:id="@+id/fragment_quanzi_chayupingcha_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="茶语评茶"/>
+            <TextView
+                android:id="@+id/fragment_quanzi_chayupingcha_guanzhu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="关注:2157"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_gray"/>
+            <TextView
+                android:id="@+id/fragment_quanzi_chayupingcha_huati"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="话题:6826"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_gray"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/fragment_quanzi_shaicha"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+            <ImageView
+                android:id="@+id/fragment_quanzi_shaicha_image"
+                android:layout_width="match_parent"
+                android:src="@mipmap/ic_launcher"
+                android:layout_height="100dp" />
+            <TextView
+                android:id="@+id/fragment_quanzi_shaicha_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:text="晒茶"/>
+            <TextView
+                android:id="@+id/fragment_quanzi_shaicha_guanzhu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="关注:2157"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_gray"/>
+            <TextView
+                android:id="@+id/fragment_quanzi_shaicha_huati"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="话题:6826"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/text_gray"/>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

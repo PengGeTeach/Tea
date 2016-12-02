@@ -77,6 +77,8 @@ public class HomePageWenZhangAdapter extends RecyclerView.Adapter<HomePageWenZha
             case "4":
                 holder.tag.setText("专题| ");
                 break;
+            default:
+                holder.tag.setText("专题| ");
         }
         holder.tag.setOnClickListener(this);
 

@@ -60,6 +60,9 @@ public class TopBar extends LinearLayout
         }
 
     }
+    public void setMineListener(OnClickListener listener){
+        mMine.setOnClickListener(listener);
+    }
 
     public void rightbtn(int res){
         mTopbtn.setImageResource(res);

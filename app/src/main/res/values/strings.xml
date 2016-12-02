@@ -15,4 +15,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="chayupingfen">茶语评分:</string>
     <string name="zonghepingfen">综合评分:</string>
+    <string name="huati">话题</string>
+    <string name="qiandao">签到</string>
 </resources>

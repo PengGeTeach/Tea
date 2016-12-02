@@ -1,17 +1,39 @@
 package com.phone1000.chayu.modles;
 
+import org.xutils.db.annotation.Column;
+import org.xutils.db.annotation.Table;
+
 /**
  * Created by Administrator on 2016/11/30 0030.
  */
+@Table(name = "ArticleBean")
 public class ArticleBean {
+    @Column(name = "id",isId = true,autoGen = true)
+    private int id;
+    @Column(name = "commend")
     private String commend;
+    @Column(name = "resource_id")
     private String resource_id;
+    @Column(name = "resource_type")
     private String resource_type;
+    @Column(name = "template_id")
     private String template_id;
+    @Column(name = "thumb")
     private String thumb;
+    @Column(name = "title")
     private String title;
+    @Column(name = "url")
     private String url;
+    @Column(name = "source")
     private ArticleSourceBean source;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public ArticleSourceBean getSource() {
         return source;
