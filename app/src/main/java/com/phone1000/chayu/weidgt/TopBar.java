@@ -68,5 +68,9 @@ public class TopBar extends LinearLayout
         mTopbtn.setImageResource(res);
     }
 
+    public void setShare(OnClickListener listener){
+        mTopSerch.setOnClickListener(listener);
+    }
+
 
 }

@@ -34,7 +34,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailsInFormation" />
+        <activity android:name=".DetailsInFormation"/>
+        <activity android:name=".WenzhangZuiXinReMen"/>
+        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.UserActivity"/>
         <activity
             android:name="com.mob.tools.MobUIShell"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -65,8 +68,6 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".activity.TeaListActivity" />
         <activity android:name=".PinPaiActivity" />
-        <activity android:name=".activity.LoginActivity" />
-        <activity android:name=".activity.UserActivity"></activity>
     </application>
 
 </manifest>
