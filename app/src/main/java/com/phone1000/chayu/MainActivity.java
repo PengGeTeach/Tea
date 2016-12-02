@@ -6,9 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.phone1000.chayu.Interface.FragmentChangeInterface;
 import com.phone1000.chayu.activity.LoginActivity;
 import com.phone1000.chayu.fragments.ChaPingFragment;
 import com.phone1000.chayu.fragments.HomeFragment;
@@ -19,11 +22,14 @@ import com.phone1000.chayu.weidgt.TopBar;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener,FragmentChangeInterface {
     private static final String TAG = MainActivity.class.getSimpleName();
     private RadioGroup main_rg;
     private Fragment showfragment;
     private TopBar mTopBar;
+    private RadioButton mShijiBtn;
+    private RadioButton mQuanziBtn;
+    private RadioButton mWenzhangbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,16 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         mTopBar.topshareVisible(false);
         transaction.add(R.id.main_container,showfragment,HomeFragment.TAG);
         transaction.commit();
+
+        if (showfragment instanceof HomeFragment) {
+            Log.e(TAG, "onCheckedChanged: Homepage的更多的监听开启");
+            ((HomeFragment) showfragment).setFragmentChangelistener(this);
+        }
+
+        mShijiBtn = (RadioButton) findViewById(R.id.main_controller_shi_ji);
+        mQuanziBtn = (RadioButton) findViewById(R.id.main_controller_quan_zi);
+        mWenzhangbtn = (RadioButton) findViewById(R.id.main_controller_wen_zhang);
+
     }
 
     @Override
@@ -54,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 switchpage(HomeFragment.TAG,HomeFragment.class);
                 mTopBar.logoVisible(true);
                 mTopBar.topshareVisible(false);
+
                 break;
             case R.id.main_controller_cha_ping:
                 switchpage(ChaPingFragment.TAG,ChaPingFragment.class);
@@ -110,11 +127,28 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 Intent intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
                 break;
+
         }
 
 
 
     }
 
+//------------------------homepage mor 点击监听---------------------
+    @Override
+    public void shijiMoreClick() {
+        mShijiBtn.setChecked(true);
+    }
 
+    @Override
+    public void quanziMoreClick() {
+        mQuanziBtn.setChecked(true);
+
+    }
+
+    @Override
+    public void wenzhangMoreClick() {
+        mWenzhangbtn.setChecked(true);
+
+    }
 }

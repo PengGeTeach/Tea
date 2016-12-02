@@ -12,11 +12,9 @@ import android.widget.ListView;
 
 import com.google.gson.Gson;
 import com.phone1000.chayu.R;
-import com.phone1000.chayu.adapters.TeaList1CheckedAdapter;
-import com.phone1000.chayu.adapters.TeaList2CheckedAdapter;
 import com.phone1000.chayu.adapters.TeaListPingFenCheckedAdapter;
-import com.phone1000.chayu.modles.TeaChldeClickListenter;
-import com.phone1000.chayu.modles.TeaListEvent;
+import com.phone1000.chayu.Interface.TeaChldeClickListenter;
+import com.phone1000.chayu.event.TeaListEvent;
 import com.phone1000.chayu.modles.TeaListsSearchModel;
 import com.phone1000.chayu.path.UtilPath;
 

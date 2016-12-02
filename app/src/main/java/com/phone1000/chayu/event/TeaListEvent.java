@@ -1,4 +1,4 @@
-package com.phone1000.chayu.modles;
+package com.phone1000.chayu.event;
 
 /**
  * Created by Administrator on 2016/11/29 0029.

@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.modles.TeaComm;
-import com.phone1000.chayu.modles.TeaListEvent;
+import com.phone1000.chayu.event.TeaListEvent;
 import com.phone1000.chayu.utils.TeachBaseAdapter;
 
 import java.util.List;

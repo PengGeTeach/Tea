@@ -20,7 +20,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.adapters.TeaListConAdapter;
-import com.phone1000.chayu.modles.TeaListEvent;
+import com.phone1000.chayu.event.TeaListEvent;
 import com.phone1000.chayu.modles.TeaListModel;
 import com.phone1000.chayu.path.UtilPath;
 
@@ -31,7 +31,6 @@ import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

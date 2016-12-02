@@ -17,5 +17,6 @@ public class UtilPath {
     public static final String QUANZI_XIANGQING="http://quanzi.chayu.com/topic/";
     public static final String PINPAI_LISTVIEW = "http://app.chayu.com/chayu/2.0/tea/lists/index";
     public static final String PINPAI_GRIDVIEW = "http://app.chayu.com/chayu/2.0/tea/lists/get_search_banner";
+    public static final String SHIJILISTPATH="http://app.chayu.com/chayu/2.0/shiji/index";
 
 }

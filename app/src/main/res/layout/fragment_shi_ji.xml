@@ -1,11 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<com.handmark.pulltorefresh.library.PullToRefreshScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_shiji_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/shi_ji" />
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/fragment_shiji_topimage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/fragment_shiji_dashi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/dashizhuan_unck"
+                android:text="大师"
+                android:gravity="center_horizontal"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/fragment_shiji_mingjia"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/mingjiaji_unck"
+                android:text="名家"
+                android:gravity="center_horizontal"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/fragment_shiji_mingxing"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/mingxing_check"
+                android:text="茗星"
+                android:gravity="center_horizontal"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/fragment_shiji_heji"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/heji_unck"
+                android:text="合集"
+                android:gravity="center_horizontal"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/fragment_shiji_faxian"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawableTop="@mipmap/faxian_unck"
+                android:text="发现"
+                android:gravity="center_horizontal"
+                android:layout_weight="1" />
+        </LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/fragment_shiji_viewPager"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"/>
+            <LinearLayout
+                android:id="@+id/fragment_shiji_point"
+                android:layout_gravity="bottom|center_horizontal"
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </FrameLayout>
+
+        <ListView
+
+            android:id="@+id/fragment_shiji_listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+        <ImageView
+            android:id="@+id/fragment_shiji_bottemimage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:src="@mipmap/ic_launcher"/>
+
+
+
+    </LinearLayout>
+</com.handmark.pulltorefresh.library.PullToRefreshScrollView>

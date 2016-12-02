@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
 import com.phone1000.chayu.DetailsInFormation;
+import com.phone1000.chayu.Interface.FragmentChangeInterface;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.activity.TeaListActivity;
 import com.phone1000.chayu.adapters.HomePageQuanZiAdapter;
@@ -40,7 +41,7 @@ import com.phone1000.chayu.modles.HomePageModel;
 import com.phone1000.chayu.modles.ShiJIBean;
 import com.phone1000.chayu.modles.SlideBean;
 import com.phone1000.chayu.modles.TeaCateBean;
-import com.phone1000.chayu.modles.TeaListEvent;
+import com.phone1000.chayu.event.TeaListEvent;
 import com.phone1000.chayu.path.UtilPath;
 
 import org.greenrobot.eventbus.EventBus;
@@ -105,7 +106,15 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
         }
     };
+    private TextView mShijiMore;
+    private TextView mQuanziMore;
+    private TextView mWenZhangMore;
 
+    private FragmentChangeInterface fragmentChangelistener;
+
+    public void setFragmentChangelistener(FragmentChangeInterface fragmentChangelistener) {
+        this.fragmentChangelistener = fragmentChangelistener;
+    }
 
     @Nullable
     @Override
@@ -170,6 +179,12 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         mWZRecycler.setFocusable(false);
 
         setUpViewFromNet();
+        mShijiMore = (TextView) layout.findViewById(R.id.fragment_homepage_shiji_more);
+        mQuanziMore = (TextView) layout.findViewById(R.id.fragment_homepage_quanzi_more);
+        mWenZhangMore = (TextView) layout.findViewById(R.id.fragment_homepage_wenzhang_more);
+        mShijiMore.setOnClickListener(this);
+        mQuanziMore.setOnClickListener(this);
+        mWenZhangMore.setOnClickListener(this);
 
     }
 
@@ -402,6 +417,19 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             intent.putExtra("path", url);
             startActivity(intent);
 
+        }else if (v instanceof TextView){
+            switch (v.getId()) {
+                case R.id.fragment_homepage_shiji_more:
+                    fragmentChangelistener.shijiMoreClick();
+                    break;
+                case R.id.fragment_homepage_quanzi_more:
+                    fragmentChangelistener.quanziMoreClick();
+                    break;
+                case R.id.fragment_homepage_wenzhang_more:
+                    fragmentChangelistener.wenzhangMoreClick();
+                    break;
+
+            }
         }
 
 

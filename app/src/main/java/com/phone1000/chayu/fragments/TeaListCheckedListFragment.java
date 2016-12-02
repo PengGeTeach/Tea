@@ -2,7 +2,6 @@ package com.phone1000.chayu.fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,14 +15,12 @@ import com.google.gson.Gson;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.adapters.TeaList1CheckedAdapter;
 import com.phone1000.chayu.adapters.TeaList2CheckedAdapter;
-import com.phone1000.chayu.event.CheckBoxClickTagEvent;
-import com.phone1000.chayu.modles.TeaChldeClickListenter;
-import com.phone1000.chayu.modles.TeaListEvent;
+import com.phone1000.chayu.Interface.TeaChldeClickListenter;
+import com.phone1000.chayu.event.TeaListEvent;
 import com.phone1000.chayu.modles.TeaListsSearchModel;
 import com.phone1000.chayu.path.UtilPath;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
