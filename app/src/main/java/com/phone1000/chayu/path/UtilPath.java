@@ -25,6 +25,7 @@ public class UtilPath {
     public static final String SHIJILISTPATH="http://app.chayu.com/chayu/2.0/shiji/index";
     public static final String SHIJI_XIANGQIANG_TYP4="http://shiji.chayu.com/collection/";
     public static final String SHIJI_XIANGQIANG_TYP5="http://shiji.chayu.com/master/";
+    public static final String WENZHANG_ZHUANTI = "http://app.chayu.com/chayu/2.0/article/lists/articleSpecial";
 
 
 

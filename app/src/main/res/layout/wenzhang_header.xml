@@ -61,6 +61,7 @@
         android:layout_height="80dp">
 
        <LinearLayout
+           android:id="@+id/ll1"
            android:layout_width="0dp"
            android:layout_weight="1"
            android:layout_height="80dp"
@@ -86,6 +87,7 @@
 
        </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll2"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="80dp"
@@ -111,6 +113,7 @@
 
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/ll3"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="80dp"

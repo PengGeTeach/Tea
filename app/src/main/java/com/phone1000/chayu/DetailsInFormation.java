@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -25,6 +26,7 @@ import cn.sharesdk.tencent.qq.QQ;
  */
 public class DetailsInFormation extends AppCompatActivity implements View.OnClickListener{
 
+    private static final String TAG = DetailsInFormation.class.getSimpleName();
     private WebView mWebView;
     private String path;
     private ShareTopBar mSharetopbar;
@@ -35,6 +37,7 @@ public class DetailsInFormation extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.detailsinformation);
         Intent intent = getIntent();
         path = intent.getStringExtra("path");
+        Log.e(TAG, "onCreate: "+path );
 
         initView();
 

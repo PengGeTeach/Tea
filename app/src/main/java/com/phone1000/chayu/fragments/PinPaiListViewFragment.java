@@ -93,9 +93,6 @@ public class PinPaiListViewFragment extends Fragment implements PullToRefreshBas
 
         x.http().post(params, new Callback.CommonCallback<String>() {
 
-
-
-
             @Override
             public void onSuccess(String result) {
                 Log.e(TAG, "onSuccess:+ PinPaiListViewFragment"+result );
@@ -112,14 +109,13 @@ public class PinPaiListViewFragment extends Fragment implements PullToRefreshBas
 
                 if (p>1){
                     List<PinPaiListViewModle.DataBean.ListBean> list = pinPaiListViewModle.getData().getList();
-                    //adapter = new PinPaiListViewFragmentAdapter(getActivity(), data, R.layout.item_tealistconlist);
-                    //data.addAll(list);
+
                     adapter.addRes(list);
                     return;
                 }
                 data = pinPaiListViewModle.getData().getList();
-                adapter = new PinPaiListViewFragmentAdapter(getActivity(), data, R.layout.item_tealistconlist);
-                mPingpaiListView.setAdapter(adapter);
+                adapter.updateRes(data);
+
             }
 
             @Override
@@ -148,7 +144,8 @@ public class PinPaiListViewFragment extends Fragment implements PullToRefreshBas
         mPingpaiListView.setOnRefreshListener(this);
         ListView refreshableView = mPingpaiListView.getRefreshableView();
         refreshableView.setOnItemClickListener(this);
-
+        adapter = new PinPaiListViewFragmentAdapter(getActivity(),null, R.layout.item_tealistconlist);
+        mPingpaiListView.setAdapter(adapter);
     }
 
     @Override
@@ -211,10 +208,11 @@ public class PinPaiListViewFragment extends Fragment implements PullToRefreshBas
     @Override
     public void onPullUpToRefresh(PullToRefreshBase refreshView) {
         p++;
-        setupView();
         if (p>(pagenum/10)+1){
             mPingpaiListView.setMode(PullToRefreshBase.Mode.DISABLED);
         }
+        setupView();
+
     }
 
     @Override

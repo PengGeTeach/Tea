@@ -2,6 +2,7 @@ package com.phone1000.chayu.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -34,7 +35,9 @@ import com.phone1000.chayu.weidgt.CustomViewPager;
 import com.squareup.picasso.Picasso;
 
 import org.greenrobot.eventbus.EventBus;
+import org.xutils.DbManager;
 import org.xutils.common.Callback;
+import org.xutils.ex.DbException;
 import org.xutils.http.RequestParams;
 import org.xutils.x;
 
@@ -54,17 +57,25 @@ public class ChaPingFragment extends Fragment implements View.OnClickListener,Pu
     private TeaCommImageAdapter teaCommImageAdapter;
     private TeaComm teaComm;
     private int proviceindex = 0;
+    private int totlenum = 0;
+    private List<TeaComm.DataBean.BannerBean> banner;
 
     public static final String TAG = ChaPingFragment.class.getSimpleName();
     private static final String GET_URL = "http://app.vmoiver.com/apiv3/post/getPostInCate?cateid=0&p=1";
     private View layout;
     private Fragment showFragment;
     private RadioGroup mRadioGroup;
+    DbManager.DaoConfig daoConfig = new DbManager.DaoConfig()
+            .setDbName("ChaYu.db")
+            .setAllowTransaction(true)
+            .setDbDir(Environment.getExternalStorageDirectory())
+            .setDbVersion(1);
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         layout = inflater.inflate(R.layout.fragment_cha_ping, container, false);
+
         return layout;
 
     }
@@ -75,7 +86,46 @@ public class ChaPingFragment extends Fragment implements View.OnClickListener,Pu
 
         initView();
 
-        setupView();
+        DbManager db = x.getDb(daoConfig);
+
+        try {
+            banner = db.selector(TeaComm.DataBean.BannerBean.class).findAll();
+            List<TeaComm.DataBean.CategoryListBean> categoryListBeen = db.selector(TeaComm.DataBean.CategoryListBean.class).findAll();
+            List<TeaComm.DataBean.CategoryListBean.Children> childrenList = db.selector(TeaComm.DataBean.CategoryListBean.Children.class).findAll();
+
+            if((banner==null||banner.size()==0)||(categoryListBeen==null||categoryListBeen.size()==0)||(childrenList==null||childrenList.size()==0)){
+                setupView();
+            }else{
+                for (int i = 0; i < categoryListBeen.size(); i++) {
+                    List<TeaComm.DataBean.CategoryListBean.Children> list = new ArrayList<>();
+                    int size = categoryListBeen.get(i).getSize();
+                    Log.e(TAG, "onActivityCreated:长度 "+size);
+                    if (size==0){
+                        categoryListBeen.get(i).setChildren(null);
+                        continue;
+                    }else{
+
+                        for(int j = totlenum;j<(totlenum+size);j++){
+                            list.add(childrenList.get(j));
+                            Log.e(TAG, "onActivityCreated: jjjj"+j );
+                        }
+                        Log.e(TAG, "onActivityCreated: 每次长度"+(totlenum+size) );
+                        totlenum = totlenum+size;
+                        categoryListBeen.get(i).setChildren(list);
+                    }
+                }
+                Chapinevent chapinevent = new Chapinevent();
+                chapinevent.setTeaComm(categoryListBeen);
+                EventBus.getDefault().postSticky(chapinevent);
+                setupViewPagerTitle();
+                Log.e(TAG, "onActivityCreated: 发出信息");
+            }
+
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
+
+        //setupView();
 
     }
 
@@ -96,11 +146,42 @@ public class ChaPingFragment extends Fragment implements View.OnClickListener,Pu
 
                 Gson gson = new Gson();
                 teaComm = gson.fromJson(result, TeaComm.class);
+                List<TeaComm.DataBean.CategoryListBean> category_list = teaComm.getData().getCategory_list();
                 Chapinevent chapinevent = new Chapinevent();
-                chapinevent.setTeaComm(teaComm);
+                chapinevent.setTeaComm(category_list);
                 EventBus.getDefault().post(chapinevent);
-
+                banner = teaComm.getData().getBanner();
                 setupViewPagerTitle();
+
+                DbManager db = x.getDb(daoConfig);
+                for(TeaComm.DataBean.CategoryListBean categoryListBean:category_list){
+                    categoryListBean.setSize(categoryListBean.getChildren().size());
+                    Log.e(TAG, "onSuccess:长度 "+ categoryListBean.getChildren().size());
+                    try {
+                        db.saveOrUpdate(category_list);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                for (TeaComm.DataBean.BannerBean b:teaComm.getData().getBanner()) {
+                    try {
+                        db.saveOrUpdate(b);
+                    } catch (DbException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                for (int i = 0; i < teaComm.getData().getCategory_list().size(); i++) {
+                    List<TeaComm.DataBean.CategoryListBean.Children> children = teaComm.getData().getCategory_list().get(i).getChildren();
+                    for (TeaComm.DataBean.CategoryListBean.Children child:children) {
+                        try {
+                            db.saveOrUpdate(child);
+                        } catch (DbException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
 
             }
 
@@ -125,7 +206,7 @@ public class ChaPingFragment extends Fragment implements View.OnClickListener,Pu
 
     private void setupViewPagerTitle() {
 
-        List<TeaComm.DataBean.BannerBean> banner = teaComm.getData().getBanner();
+
 
         List<ImageView> data = new ArrayList<ImageView>();
 
@@ -133,7 +214,8 @@ public class ChaPingFragment extends Fragment implements View.OnClickListener,Pu
             ImageView imageView = new ImageView(getActivity());
             Log.e(TAG, "onSuccess: "+banner.get(i).getThumb() );
             data.add(imageView);
-            Picasso.with(getActivity()).load(banner.get(i).getThumb()).noFade().into(imageView);
+            //Picasso.with(getActivity()).load(banner.get(i).getThumb()).into(imageView);
+            x.image().bind(imageView,banner.get(i).getThumb());
             View view = new View(getActivity());
             DisplayMetrics metrics = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
@@ -168,7 +250,6 @@ public class ChaPingFragment extends Fragment implements View.OnClickListener,Pu
 
         mRadioGroup.setOnCheckedChangeListener(this);
 
-
         teaCommImageAdapter = new TeaCommImageAdapter(null);
         mViewPagerTitle.setAdapter(teaCommImageAdapter);
 
@@ -182,6 +263,7 @@ public class ChaPingFragment extends Fragment implements View.OnClickListener,Pu
         FragmentTransaction transaction = manager.beginTransaction();
         showFragment = new PingPaiFragment();
         transaction.add(R.id.frame,showFragment,PingPaiFragment.TAG);
+        Log.e(TAG, "initView:添加fragment " );
         transaction.commit();
 
     }
@@ -192,8 +274,8 @@ public class ChaPingFragment extends Fragment implements View.OnClickListener,Pu
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        mlldiquText.setText(teaComm.getData().getBanner().get(position).getTags());
-        mllTexView.setText(teaComm.getData().getBanner().get(position).getTitle());
+        mlldiquText.setText(banner.get(position).getTags());
+        mllTexView.setText(banner.get(position).getTitle());
         mLl.getChildAt(proviceindex).setBackgroundResource(R.mipmap.dian_uncheck);
         mLl.getChildAt(position).setBackgroundResource(R.mipmap.dian_checked);
         proviceindex = position;
@@ -226,6 +308,15 @@ public class ChaPingFragment extends Fragment implements View.OnClickListener,Pu
 
     @Override
     public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+
+        DbManager db = x.getDb(daoConfig);
+        try {
+            db.delete(TeaComm.DataBean.CategoryListBean.Children.class);
+            db.delete(TeaComm.DataBean.CategoryListBean.class);
+            db.delete(TeaComm.DataBean.BannerBean.class);
+        } catch (DbException e) {
+            e.printStackTrace();
+        }
 
         setupView();
 

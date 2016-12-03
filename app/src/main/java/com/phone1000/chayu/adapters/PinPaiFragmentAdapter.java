@@ -54,8 +54,7 @@ public class PinPaiFragmentAdapter extends BaseExpandableListAdapter{
     @Override
     public int getChildrenCount(int i) {
         List<TeaComm.DataBean.CategoryListBean.Children> childrens = (List<TeaComm.DataBean.CategoryListBean.Children>) data.get(i).getChildren();
-        Log.e(TAG, "getChildrenCount: "+ data.get(i).getChildren().size());
-//        return childrens!=null?data.get(i).getChildren().size():0;
+        //Log.e(TAG, "getChildrenCount: "+ data.get(i).getChildren().size());
         return childrens!=null?1:0;
     }
 
@@ -130,16 +129,10 @@ public class PinPaiFragmentAdapter extends BaseExpandableListAdapter{
             childen.getName();
         }
 
-        //holder.myGridView.setOnItemClickListener(this);
 
        holder.myGridView.setAdapter(gridViewAdapter);
 
-       /* GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
-        holder.myGridView.setLayoutManager(gridLayoutManager);
 
-
-        RecyGridAdapter recyGridAdapter = new RecyGridAdapter(context, data.get(i).getChildren());
-        holder.myGridView.setAdapter(recyGridAdapter);*/
 
         return view;
     }
@@ -148,15 +141,7 @@ public class PinPaiFragmentAdapter extends BaseExpandableListAdapter{
         return true;
     }
 
-   /* @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        Log.e(TAG, "onItemClick: 我点击了"+i );
-        if (view instanceof TextView){
-            Log.e(TAG, "onItemClick: "+"我是textview" );
-        }
-
-    }*/
 
 
     public static class ViewHolderParent{
@@ -174,12 +159,10 @@ public class PinPaiFragmentAdapter extends BaseExpandableListAdapter{
     public static class ViewHolderChild{
 
         MyGridView myGridView;
-        //RecyclerView myGridView;
 
         public ViewHolderChild(View itemView){
 
             myGridView = ((MyGridView) itemView.findViewById(R.id.recycler_gridview));
-            //myGridView = ((RecyclerView) itemView.findViewById(R.id.recycler_gridview));
 
         }
 

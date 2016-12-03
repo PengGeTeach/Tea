@@ -22,17 +22,21 @@ import com.phone1000.chayu.utils.ListViewUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/11/28 0028.
  */
-public class PingPaiFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class PingPaiFragment extends Fragment implements ExpandableListView.OnGroupClickListener {
 
     public static final String TAG = PingPaiFragment.class.getSimpleName();
     private View layout;
     private ExpandableListView mExListView;
     private TeaComm data;
     private PinPaiFragmentAdapter adapter;
+    List<TeaComm.DataBean.CategoryListBean> category_list;
 
 
     @Nullable
@@ -53,7 +57,7 @@ public class PingPaiFragment extends Fragment implements AdapterView.OnItemClick
 
         mExListView = ((ExpandableListView) layout.findViewById(R.id.expanded_lv));
         mExListView.setFocusable(false);
-        mExListView.setOnItemClickListener(this);
+        mExListView.setOnGroupClickListener(this);
 
     }
 
@@ -69,11 +73,13 @@ public class PingPaiFragment extends Fragment implements AdapterView.OnItemClick
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
+    @Subscribe(sticky = true ,threadMode = ThreadMode.MAIN)
     public void onEvent(Chapinevent event){
-        TeaComm teaComm = event.getTeaComm();
-
-        adapter = new PinPaiFragmentAdapter(getActivity(),teaComm.getData().getCategory_list());
+        //TeaComm teaComm = event.getTeaComm();
+        //List<TeaComm.DataBean.CategoryListBean> category_list = teaComm.getData().getCategory_list();
+        Log.e(TAG, "onEvent: 我到了这里" );
+        category_list = event.getTeaComm();
+        adapter = new PinPaiFragmentAdapter(getActivity(), category_list);
         mExListView.setGroupIndicator(null);
         mExListView.setAdapter(adapter);
 
@@ -81,16 +87,23 @@ public class PingPaiFragment extends Fragment implements AdapterView.OnItemClick
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Log.e(TAG, "onItemClick: "+"我点击了这" +i);
-        if("全部".equals(data.getData().getCategory_list().get(i).getName())) {
-            Log.e(TAG, "onItemClick: "+"我点击了这里" );
+    public boolean onGroupClick(ExpandableListView expandableListView, View view, int i, long l) {
+
+        Log.e(TAG, "onGroupClick:父布局点击的条目"+i );
+
+        if (i==0){
             TeaListEvent event = new TeaListEvent(0x110);
-            //event.setSid(data.get(tag).getName());
-            event.setBid(data.getData().getCategory_list().get(i).getBid()+"");
+            event.setBid(category_list.get(i).getBid()+"");
+            event.setTeaName(category_list.get(i).getName());
             EventBus.getDefault().postSticky(event);
             Intent intent = new Intent(getActivity(), TeaListActivity.class);
             startActivity(intent);
         }
+
+        return false;
     }
+
+
+
+
 }

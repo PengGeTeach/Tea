@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.phone1000.chayu.ChayuPingFenBang;
 import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
 import com.phone1000.chayu.modles.BangDanModle;
@@ -19,7 +21,7 @@ import java.util.List;
 /**
  * Created by Administrator on 2016/11/29 0029.
  */
-public class BangDanAdapter extends TeachBaseAdapter<BangDanModle.DataBean.TopListBean>  {
+public class BangDanAdapter extends TeachBaseAdapter<BangDanModle.DataBean.TopListBean> implements View.OnClickListener {
 
     private static final String TAG = BangDanAdapter.class.getSimpleName();
     private Context context;
@@ -41,11 +43,21 @@ public class BangDanAdapter extends TeachBaseAdapter<BangDanModle.DataBean.TopLi
         BangdanChildListAdapter bangdanChildListAdapter = new BangdanChildListAdapter(context, item.getList(), R.layout.bangdan_listview_child_item);
 
         listView.setAdapter(bangdanChildListAdapter);
-
-
         ListViewUtils.setListViewHeightBasedOnChildren(listView);
 
+        Button button = (Button) holder.getView(R.id.more);
+        button.setOnClickListener(this);
+        button.setTag(item);
     }
 
 
+    @Override
+    public void onClick(View view) {
+        BangDanModle.DataBean.TopListBean listBean = (BangDanModle.DataBean.TopListBean) view.getTag();
+        Intent intent = new Intent(context, ChayuPingFenBang.class);
+        intent.putExtra("bang","1");
+        //intent.putExtra("bid",listBean.getBid());
+        //intent.putExtra("year","2016");
+        context.startActivity(intent);
+    }
 }

@@ -89,7 +89,6 @@ public class PinPaiGridView extends Fragment implements PinPaiGridViewAdapter3.P
             e.setName(pinPaiGridViewModle.getData().getBrand_list().get(position).getLetter());
             pinPaiGridViewModle.getData().getBrand_list().get(position).getList().add(0,e);
 
-            Log.e(TAG, "sendpingpaiitem: +测试数量"+pinPaiGridViewModle.getData().getBrand_list().get(position).getList().size() );
 
             for (int i = 0; i <pinPaiGridViewModle.getData().getBrand_list().get(position).getList().size() ; i++) {
                 if (i == 0){

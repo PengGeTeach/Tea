@@ -37,6 +37,7 @@ public class ChayuPingFenFragment extends Fragment implements PullToRefreshBase.
     private String bid = null;
     private BangDanDetaileModle bangDanDetaileModle;
     private int p = 1;
+    private ChaYuPingFenBangFragmentAdapter adapter;
 
 
 
@@ -46,6 +47,8 @@ public class ChayuPingFenFragment extends Fragment implements PullToRefreshBase.
 
         Bundle bundle = getArguments();
         order = bundle.getString("bang");
+        year = bundle.getString("year");
+        bid = bundle.getString("bid");
 
     }
 
@@ -79,7 +82,7 @@ public class ChayuPingFenFragment extends Fragment implements PullToRefreshBase.
         params.addParameter("agent","5");
         params.addParameter("p",p);
         x.http().post(params, new Callback.CommonCallback<String>() {
-            private ChaYuPingFenBangFragmentAdapter adapter;
+
             @Override
             public void onSuccess(String result) {
                 Log.e(TAG, "onSuccess: "+result );
@@ -92,8 +95,8 @@ public class ChayuPingFenFragment extends Fragment implements PullToRefreshBase.
                     return;
                 }
                 bangDanDetaileModle = gson.fromJson(result, BangDanDetaileModle.class);
-                adapter = new ChaYuPingFenBangFragmentAdapter(getActivity(),bangDanDetaileModle.getData(), R.layout.bangdan_listview_child_item);
-                mRefresh.setAdapter(adapter);
+                adapter.updateRes(bangDanDetaileModle.getData());
+
 
             }
 
@@ -123,7 +126,8 @@ public class ChayuPingFenFragment extends Fragment implements PullToRefreshBase.
         mRefresh.setMode(PullToRefreshBase.Mode.PULL_FROM_END);
 
         mRefresh.setOnRefreshListener(this);
-
+        adapter = new ChaYuPingFenBangFragmentAdapter(getActivity(),null, R.layout.bangdan_listview_child_item);
+        mRefresh.setAdapter(adapter);
     }
 
     @Subscribe(sticky = true,threadMode = ThreadMode.MAIN)

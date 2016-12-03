@@ -22,6 +22,8 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.phone1000.chayu.DetailsInFormation;
 import com.phone1000.chayu.R;
+import com.phone1000.chayu.WenzhangZhuangTi;
+import com.phone1000.chayu.WenzhangZuiXinReMen;
 import com.phone1000.chayu.adapters.TeaCommImageAdapter;
 import com.phone1000.chayu.adapters.WenzhangAdapter;
 import com.phone1000.chayu.modles.ListBean;
@@ -82,13 +84,16 @@ public class WenZhangFragment extends Fragment implements View.OnClickListener, 
         mLinear = ((LinearLayout) mHeaderView.findViewById(R.id.ll_dot));
         mHeaderViewPageer.setOnPageChangeListener(this);
 
-        TextView zuixin = (TextView) mHeaderView.findViewById(R.id.zuixin);
-        TextView remen = (TextView) mHeaderView.findViewById(R.id.remen);
-        TextView zhuanti = (TextView) mHeaderView.findViewById(R.id.zhaunti);
 
-        zuixin.setOnClickListener(this);
-        remen.setOnClickListener(this);
-        zhuanti.setOnClickListener(this);
+        LinearLayout ll1 = (LinearLayout) mHeaderView.findViewById(R.id.ll1);
+        LinearLayout ll2 = (LinearLayout) mHeaderView.findViewById(R.id.ll2);
+        LinearLayout ll3 = (LinearLayout) mHeaderView.findViewById(R.id.ll3);
+
+        ll1.setOnClickListener(this);
+        ll2.setOnClickListener(this);
+        ll3.setOnClickListener(this);
+
+
 
         mListView = mRefreshListView.getRefreshableView();
 
@@ -101,6 +106,9 @@ public class WenZhangFragment extends Fragment implements View.OnClickListener, 
 
         wenzhangViewAdapter = new TeaCommImageAdapter(null);
         mHeaderViewPageer.setAdapter(wenzhangViewAdapter);
+
+        adapter = new WenzhangAdapter(getActivity(),null, R.layout.wenzhang_item1,R.layout.wenzhang_item2,R.layout.wanzhang_item3);
+        mListView.setAdapter(adapter);
 
     }
 
@@ -147,8 +155,7 @@ public class WenZhangFragment extends Fragment implements View.OnClickListener, 
 
         List<ListBean> list = wenZhangModle.getData().getList();
 
-        adapter = new WenzhangAdapter(getActivity(),list, R.layout.wenzhang_item1,R.layout.wenzhang_item2,R.layout.wanzhang_item3);
-        mListView.setAdapter(adapter);
+        adapter.updateRes(list);
 
     }
 
@@ -189,9 +196,25 @@ public class WenZhangFragment extends Fragment implements View.OnClickListener, 
             Log.e(TAG, "onClick: "+path );
             intent.putExtra("path",path);
             startActivity(intent);
-        }else{
+        }else if (view instanceof LinearLayout){
 
+            switch (view.getId()) {
 
+                case R.id.ll1:
+                    Intent intent = new Intent(getActivity(),WenzhangZuiXinReMen.class);
+                    intent.putExtra("order","created");
+                    startActivity(intent);
+                    break;
+                case R.id.ll2:
+                    Intent intent1 = new Intent(getActivity(),WenzhangZuiXinReMen.class);
+                    intent1.putExtra("order","clicks");
+                    startActivity(intent1);
+                    break;
+                case R.id.ll3:
+                    Intent intent2 = new Intent(getActivity(), WenzhangZhuangTi.class);
+                    startActivity(intent2);
+                    break;
+            }
         }
 
 

@@ -3,6 +3,9 @@ package com.phone1000.chayu.modles;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.xutils.db.annotation.Column;
+import org.xutils.db.annotation.Table;
+
 import java.util.List;
 
 /**
@@ -152,7 +155,7 @@ public class TeaComm implements Parcelable{
                 this.url = url;
             }
         }
-
+        @Table(name = "BannerBean")
         public static class BannerBean {
             /**
              * resource_id : 2675
@@ -164,14 +167,21 @@ public class TeaComm implements Parcelable{
              * title : 香气滋味有冲击力的新年份生普，综评9分
              * url :  http://chaping.chayu.com/tea/2675
              */
-
+            @Column(name = "resource_id",isId = true,autoGen = false)
             private String resource_id;
+            @Column(name = "resource_type")
             private String resource_type;
+            @Column(name = "source")
             private SourceBean source;
+            @Column(name = "tags")
             private String tags;
+            @Column(name = "template_id")
             private String template_id;
+            @Column(name = "thumb")
             private String thumb;
+            @Column(name = "title")
             private String title;
+            @Column(name = "url")
             private String url;
 
             public String getResource_id() {
@@ -254,18 +264,32 @@ public class TeaComm implements Parcelable{
                 }
             }
         }
-
+        @Table(name = "CategoryListBean")
         public static class CategoryListBean {
             /**
              * bid : 0
              * children : []
              * ico : http://static.chayu.com/mobile/main/img/common/icons_tea/ico_tea_all.png
              * name : 全部
+             *
              */
-
+            @Column(name = "bid",isId = true,autoGen = false)
             private int bid;
+            @Column(name = "ico")
             private String ico;
+            @Column(name = "name")
             private String name;
+            @Column(name = "size")
+            private int size;
+
+            public int getSize() {
+                return size;
+            }
+
+            public void setSize(int size) {
+                this.size = size;
+            }
+
             private List<Children> children;
 
             public int getBid() {
@@ -300,9 +324,13 @@ public class TeaComm implements Parcelable{
                 this.children = children;
             }
 
+            @Table(name = "Children")
             public static class Children{
-
+                @Column(name = "id" ,isId = true,autoGen = true)
+                private int id;
+                @Column(name = "name")
                 private String name;
+                @Column(name = "sid")
                 private String sid;
 
                 public String getSid() {

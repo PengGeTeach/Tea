@@ -52,6 +52,8 @@ public class GridViewAdapter extends TeachBaseAdapter<TeaComm.DataBean.CategoryL
         TeaListEvent event = new TeaListEvent(0x110);
         Log.e(TAG, "onClick:我在这里测试点击 "+tag );
         event.setSid(data.get(tag).getSid());
+        event.setBid(j+"");
+        event.setTeaName(data.get(tag).getName());
         EventBus.getDefault().postSticky(event);
         Intent intent = new Intent(context, TeaListActivity.class);
         context.startActivity(intent);

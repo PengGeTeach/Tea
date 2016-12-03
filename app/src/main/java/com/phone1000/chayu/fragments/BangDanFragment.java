@@ -121,7 +121,7 @@ public class BangDanFragment extends Fragment implements View.OnClickListener, A
         LinearLayout layout1 = (LinearLayout) mLinearLayout.findViewById(R.id.linear_1);
         LinearLayout layout2 = (LinearLayout) mLinearLayout.findViewById(R.id.linear_2);
         LinearLayout layout3 = (LinearLayout) mLinearLayout.findViewById(R.id.linear_3);
-        LinearLayout layout4 = (LinearLayout) mLinearLayout.findViewById(R.id.linear_3);
+        LinearLayout layout4 = (LinearLayout) mLinearLayout.findViewById(R.id.linear_4);
         layout1.setOnClickListener(this);
         layout2.setOnClickListener(this);
         layout3.setOnClickListener(this);
@@ -144,6 +144,7 @@ public class BangDanFragment extends Fragment implements View.OnClickListener, A
 
         switch (view.getId()) {
             case R.id.linear_1:
+                Log.e(TAG, "onClick: 点击了这里" );
                 Intent intent = new Intent(getActivity(), ChayuPingFenBang.class);
                 intent.putExtra("bang","1");
                 startActivity(intent);
